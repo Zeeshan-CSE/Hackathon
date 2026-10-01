@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LifeLink | Smart Blood & Emergency Donor Network</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
+<style>
+:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--red:#AD2831;--dred:#800E13;--teal:#3A7D78;--tealx:#2F6A66;--cream:#FAF7F2;--rose:#E9CFCF;--text:#2B2D2F;--mute:#6B6868;--line:#E5DEDA;--ok:#2E7D5B}
+html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+body{background:var(--cream);color:var(--text);font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden}
+*{min-width:0}
+button{transition:background .15s,border-color .15s,box-shadow .15s,transform .08s;cursor:pointer}button:active{transform:scale(.98)}
+button:disabled{opacity:.5;cursor:not-allowed}
+input,select{background:#fff;border:1.5px solid #8A8582;border-radius:10px;padding:9px 12px;width:100%;min-height:42px;color:var(--text);transition:border-color .15s,box-shadow .15s}
+input:hover,select:hover{border-color:var(--text)}
+input[type=checkbox]{min-height:0}
+:focus-visible{outline:3px solid var(--teal);outline-offset:2px;border-radius:6px}
+input:focus-visible,select:focus-visible{outline:3px solid var(--teal);outline-offset:0;border-color:var(--teal);border-radius:10px}
+body .bg-slate-800{background:#fff;box-shadow:0 1px 2px rgba(43,45,47,.05),0 6px 18px rgba(43,45,47,.04)}
+body .bg-slate-900{background:#F5F0EA}body .bg-slate-700{background:#EFE8E2}body .bg-slate-600{background:#CFC6C0}
+body .bg-gray-900\/95{background:rgba(255,255,255,.94);box-shadow:0 1px 0 var(--line)}
+body .border-slate-700,body .border-slate-700\/50,body .border-slate-700\/60{border-color:var(--line)}
+body .rounded-xl{border-radius:16px}
+body .text-white{color:var(--text)}body .text-slate-100,body .text-slate-200,body .text-slate-300{color:#3F4143}
+body .text-slate-400,body .text-slate-500{color:var(--mute)}
+body .text-emerald-300,body .text-emerald-100{color:var(--tealx)}body .text-red-300,body .text-red-400{color:#9B1F28}body .text-amber-300{color:#8A4B08}
+body .bg-emerald-900\/60,body .bg-emerald-900\/40,body .bg-emerald-900\/50{background:#E3EFED}
+body .bg-red-900\/20{background:#F8ECEC}body .border-red-700,body .border-red-800\/50{border-color:#D9A9A9}
+body .bg-emerald-500{background:var(--red)}body .text-slate-900{color:#fff}
+body .hover\:bg-emerald-400:hover{background:var(--dred)}
+body .bg-red-700,body .bg-red-600{background:var(--red);color:#fff}body .hover\:bg-red-600:hover{background:var(--dred)}
+body .bg-emerald-700,body .bg-emerald-800{background:var(--teal)}
+body .border-emerald-500{border-color:var(--red)}
+body button.border-emerald-500.text-emerald-300{color:var(--dred)}
+body .hover\:bg-slate-600:hover{background:#E4DBD5}body .hover\:bg-slate-800:hover{background:#F5F0EA}
+body .hover\:text-white:hover,body .hover\:text-slate-200:hover{color:var(--text)}
+body .hover\:border-emerald-500\/60:hover{border-color:var(--teal)}
+body .bg-black\/70,body .bg-black\/50{background:rgba(43,45,47,.55)}
+.tw{overflow-x:auto}
+.ll-sec{background:#fff;color:var(--tealx);border:1.5px solid var(--teal)}.ll-sec:hover{background:#E3EFED}
+.ll-ok{background:#E4F2EB;color:#1F5F43;border-color:#9CCBB5}.ll-warn{background:#FBF0DC;color:#7A4306;border-color:#E3C48A}
+.ll-bad{background:#F8E4E4;color:#8E1B24;border-color:#DDA3A3}.ll-neutral{background:#EFE8E2;color:#4A4745;border-color:#D8CFC9}
+.ll-skip{position:absolute;left:12px;top:-60px;z-index:100;background:var(--dred);color:#fff;padding:10px 16px;border-radius:10px;font-weight:700}.ll-skip:focus{top:12px}
+.ll-hero{position:relative;background:radial-gradient(circle at 100% 0,rgba(233,207,207,.55),transparent 55%),#fff;border:1px solid var(--line);border-radius:24px;padding:clamp(24px,5vw,56px);box-shadow:0 1px 2px rgba(43,45,47,.05),0 10px 30px rgba(43,45,47,.05)}
+.ll-eyebrow{display:inline-block;font-size:.8rem;font-weight:700;color:var(--tealx);background:#E3EFED;border-radius:999px;padding:5px 14px;margin-bottom:18px}
+.ll-h1{font-size:clamp(2rem,5.2vw,3.4rem);line-height:1.12;font-weight:800;letter-spacing:-.02em;color:var(--text)}
+.ll-lead{margin-top:16px;font-size:clamp(1.05rem,2vw,1.25rem);color:var(--mute);max-width:40rem}
+.ll-h2{font-size:1.4rem;font-weight:800;margin-bottom:16px;color:var(--text)}
+.ll-portal{display:flex;flex-direction:column;align-items:flex-start;gap:8px;text-align:left;background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:0 1px 2px rgba(43,45,47,.05);transition:border-color .15s,box-shadow .2s,transform .15s}
+.ll-portal:hover{border-color:var(--teal);box-shadow:0 8px 22px rgba(43,45,47,.08);transform:translateY(-2px)}
+.ll-ico{display:grid;place-items:center;width:48px;height:48px;border-radius:14px;background:#E3EFED;font-size:1.5rem;margin-bottom:4px}
+.ll-go{margin-top:auto;padding-top:6px;font-weight:700;color:var(--red)}.ll-portal:hover .ll-go{color:var(--dred);text-decoration:underline}
+.ll-list{list-style:none;margin:0;padding:0;display:grid;gap:10px;font-size:.95rem}.ll-list li{position:relative;padding-left:28px}
+.ll-list li::before{position:absolute;left:0;top:0;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:.7rem;font-weight:800;line-height:20px;text-align:center}
+.ll-x li::before{content:"✕"/"";background:#F8E4E4;color:#8E1B24}.ll-v li::before{content:"✓"/"";background:#E4F2EB;color:#1F5F43}
+.ll-warnc{border-top:4px solid var(--red)}.ll-okc{border-top:4px solid var(--ok)}
+@media(pointer:coarse){button.rounded-lg,.tw.flex>button,header select{min-height:44px}}
+@media(max-width:640px){main{padding-left:16px!important;padding-right:16px!important}.ll-hero{border-radius:20px}}
+@keyframes llspin{to{transform:rotate(360deg)}}@keyframes llping{from{r:5;opacity:.9}to{r:18;opacity:0}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition:none!important}.ll-portal:hover{transform:none}}
+</style></head>
+<body><div id="root"></div>
+<script type="text/babel">
+const {useState,useMemo,useEffect,useRef}=React;
+const BG=['A+','A-','B+','B-','AB+','AB-','O+','O-'];
+const CAN={'O-':BG,'O+':['O+','A+','B+','AB+'],'A-':['A-','A+','AB-','AB+'],'A+':['A+','AB+'],'B-':['B-','B+','AB-','AB+'],'B+':['B+','AB+'],'AB-':['AB-','AB+'],'AB+':['AB+']};
+const STEPS=['Matching','Donors Notified','Awaiting Response','Donation Coordinated','Fulfilled','Completed'];
+const CITY={Karachi:[24.86,67.01],Jamshoro:[25.41,68.27],Hyderabad:[25.39,68.37]};
+const L={
+ title:{en:'Blood, when every minute counts',ur:'جب ہر منٹ قیمتی ہو، خون بروقت',sd:'جڏهن هر منٽ قيمتي هجي، رت وقت تي'},
+ sub:{en:'Verified requests, compatible donors, coordinated donation.',ur:'تصدیق شدہ درخواستیں، موزوں ڈونرز، منظم عطیہ۔',sd:'تصديق ٿيل درخواستون، مناسب ڊونرز، منظم عطيو.'},
+ cta:{en:'Request blood now',ur:'ابھی خون کی درخواست کریں',sd:'هاڻي رت جي درخواست ڪريو'},
+ patient:{en:'Patient name',ur:'مریض کا نام',sd:'مريض جو نالو'},
+ group:{en:'Blood group',ur:'بلڈ گروپ',sd:'رت جو گروپ'},
+ units:{en:'Units needed',ur:'درکار یونٹس',sd:'گھربل يونٽ'},
+ hospital:{en:'Hospital',ur:'ہسپتال',sd:'اسپتال'},
+ urgency:{en:'Urgency',ur:'فوری ضرورت',sd:'ضرورت'},
+ deadline:{en:'Deadline (hours)',ur:'آخری وقت (گھنٹے)',sd:'آخري وقت (ڪلاڪ)'},
+ submit:{en:'Submit request',ur:'درخواست جمع کریں',sd:'درخواست جمع ڪريو'},
+ total:{en:'Total requests',ur:'کل درخواستیں',sd:'ڪل درخواستون'},
+ active:{en:'Active urgencies',ur:'فعال ہنگامی',sd:'فعال هنگامي'},
+ avg:{en:'Avg fulfilment (h)',ur:'اوسط تکمیل (گھنٹے)',sd:'سراسري مڪمل (ڪلاڪ)'},
+ donors:{en:'Registered donors',ur:'رجسٹرڈ ڈونرز',sd:'رجسٹرڊ ڊونرز'}
+};
+const rad=x=>x*Math.PI/180;
+const km=(a,b)=>{const R=6371,dl=rad(b.lat-a.lat),dg=rad(b.lng-a.lng);const q=Math.sin(dl/2)**2+Math.cos(rad(a.lat))*Math.cos(rad(b.lat))*Math.sin(dg/2)**2;return Math.round(R*2*Math.asin(Math.sqrt(q))*10)/10};
+
+// matching utility: medical compatibility first, then distance, availability, 56 day rule
+function calculateDonorMatchScore(dn,rq,h){
+  const dist=km(dn,h);
+  if(!CAN[dn.bg].includes(rq.bg)) return {score:0,dist,eligible:false,available:false,why:'Ineligible'};
+  const age=dn.age||28,eligible=dn.lastDays>=56&&age>=18&&age<=65, available=dn.available&&!dn.suspended&&!(dn.pauseUntil>Date.now());
+  let s=50*Math.max(0,1-dist/(rq.urgency==='Critical'?15:30));
+  s+=available?20:0;
+  s+=eligible?20:Math.max(0,dn.lastDays/56*8);
+  s+=dn.bg===rq.bg?10:5;const ra=dn.acc||0,rd=dn.dec||0;s+=ra+rd?Math.round(5*(ra-rd)/(ra+rd)):0;
+  return {score:Math.min(100,Math.round(s)),dist,eligible,available,why:null};
+}
+const acceptProb=(x)=>Math.max(5,Math.min(95,Math.round(88-x.dist*2.2-(x.available?0:35)-(x.eligible?0:20)+(new Date().getHours()>=8&&new Date().getHours()<=22?4:-12))));
+// privacy wrapper: contact only visible after acceptance
+const mask=(dn,resp,dist)=>(resp==='Accepted'||resp==='Donated')?{label:dn.name,phone:dn.phone,email:dn.email}:{label:'Compatible Donor • '+dist+' km away',phone:'••• •••• ••••',email:'••••@••••'};
+
+const ago=t=>{const m=Math.round((Date.now()-t)/60000);return m<1?'just now':m<60?m+' min ago':Math.round(m/60)+' h ago'};
+const left=r=>{const ms=r.created+r.deadline*3600000-Date.now();if(ms<=0)return 'Overdue';return Math.floor(ms/3600000)+'h '+Math.floor(ms%3600000/60000)+'m left'};
+const now=Date.now();
+const mk=(id,name,bg,city,dx,dy,av,days,tot,ph)=>({id,name,bg,city,lat:CITY[city][0]+dx,lng:CITY[city][1]+dy,available:av,lastDays:days,total:tot,phone:ph,email:name.split(' ')[0].toLowerCase()+'@mail.pk',suspended:false});
+const seed=()=>addHyd({
+ donors:[mk('d1','Ali Raza','B+','Karachi',.011,.02,true,120,6,'0300 1112233'),mk('d2','Hina Siddiqui','O-','Karachi',.04,.07,true,90,9,'0301 2223344'),mk('d3','Bilal Ahmed','A+','Karachi',-.015,-.005,true,30,3,'0302 3334455'),mk('d4','Zainab Shah','B-','Karachi',-.04,.09,true,200,4,'0303 4445566'),mk('d5','Imran Malik','AB+','Karachi',.07,.1,false,150,2,'0304 5556677'),mk('d6','Saad Memon','O+','Jamshoro',-.01,-.005,true,75,5,'0305 6667788')],
+ hospitals:[
+  {id:'h1',name:'Civil Hospital Karachi',city:'Karachi',lat:24.8591,lng:67.0099,stock:{'A+':8,'A-':2,'B+':1,'B-':0,'AB+':4,'AB-':1,'O+':6,'O-':2}},
+  {id:'h2',name:'Aga Khan University Hospital',city:'Karachi',lat:24.892,lng:67.0745,stock:{'A+':12,'A-':4,'B+':9,'B-':3,'AB+':5,'AB-':2,'O+':14,'O-':5}},
+  {id:'h3',name:'Liaquat University Hospital',city:'Jamshoro',lat:25.417,lng:68.275,stock:{'A+':3,'A-':0,'B+':2,'B-':1,'AB+':1,'AB-':0,'O+':4,'O-':1}},
+  {id:'h4',name:'Indus Hospital',city:'Karachi',lat:24.8365,lng:67.125,stock:{'A+':10,'A-':3,'B+':7,'B-':2,'AB+':3,'AB-':2,'O+':11,'O-':4}}],
+ requests:[
+  {id:'R1',patient:'Hamza Qureshi',bg:'B+',units:2,got:0,hid:'h1',city:'Karachi',urgency:'Critical',deadline:6,status:'Awaiting Response',verified:true,user:'Sara Khan',flagged:false,resp:{d1:'Pending',d2:'Declined',d4:'Pending'},created:now-50*60000},
+  {id:'R2',patient:'Maryam Noor',bg:'O+',units:3,got:0,hid:'h2',city:'Karachi',urgency:'Urgent',deadline:12,status:'Donors Notified',verified:false,user:'Sara Khan',flagged:false,resp:{d6:'Pending',d2:'Pending'},created:now-25*60000},
+  {id:'R3',patient:'Faheem Jatoi',bg:'AB-',units:4,got:0,hid:'h3',city:'Jamshoro',urgency:'Critical',deadline:8,status:'Donors Notified',verified:false,user:'Omar Farooq',flagged:false,resp:{d2:'Pending'},created:now-10*60000}],
+ notes:[
+  {id:'n1',to:'donor:d1',text:'New suitable request: 2 units B+ at Civil Hospital Karachi (Critical)',ts:now-48*60000,read:false},
+  {id:'n2',to:'donor:d4',text:'New suitable request: 2 units B+ at Civil Hospital Karachi (Critical)',ts:now-48*60000,read:false},
+  {id:'n3',to:'coordinator',text:'Donor Hina Siddiqui declined request R1',ts:now-30*60000,read:false},
+  {id:'n4',to:'coordinator',text:'New request R2 awaiting verification',ts:now-25*60000,read:false},
+  {id:'n5',to:'coordinator',text:'New request R3 awaiting verification',ts:now-10*60000,read:false},
+  {id:'n6',to:'donor:d6',text:'New suitable request: 3 units O+ at Aga Khan University Hospital (Urgent)',ts:now-24*60000,read:false},
+  {id:'n7',to:'donor:d2',text:'New suitable request: 3 units O+ at Aga Khan University Hospital (Urgent)',ts:now-24*60000,read:false},
+  {id:'n8',to:'donor:d2',text:'New suitable request: 4 units AB- at Liaquat University Hospital (Critical)',ts:now-9*60000,read:false},
+  {id:'n9',to:'admin',text:'Request R3 created by Omar Farooq',ts:now-10*60000,read:false}],
+ logs:[{ts:now-50*60000,t:'R1 created, verified and 3 donors notified'},{ts:now-25*60000,t:'R2 created by Sara Khan'},{ts:now-10*60000,t:'R3 created by Omar Farooq'}],
+ base:{fulfilled:41,total:58},
+ users:[{id:'ua',role:'admin',name:'System Admin',email:'admin@lifelink.pk',pw:H('Admin@123')},{id:'uc',role:'coordinator',name:'Hospital Coordinator',email:'coord@lifelink.pk',pw:H('Coord@123')},{id:'ur1',role:'requester',name:'Sara Khan',email:'sara@mail.pk',pw:H('Sara@123')},{id:'ur2',role:'requester',name:'Omar Farooq',email:'omar@mail.pk',pw:H('Omar@123')}].concat([['d1','Ali Raza','ali'],['d2','Hina Siddiqui','hina'],['d3','Bilal Ahmed','bilal'],['d4','Zainab Shah','zainab'],['d5','Imran Malik','imran'],['d6','Saad Memon','saad']].map(([id,n,e])=>({id:'u'+id,role:'donor',name:n,email:e+'@mail.pk',pw:H('Donor@123'),donorId:id})))
+});
+
+// ---- workflow actions, each mutates a cloned draft ----
+const nid=()=>Math.random().toString(36).slice(2,8);
+const note=(d,to,text)=>d.notes.unshift({id:nid(),to,text,ts:Date.now(),read:false});
+const logA=(d,t)=>d.logs.unshift({ts:Date.now(),t});
+const getH=(d,id)=>d.hospitals.find(x=>x.id===id);
+const getR=(d,id)=>d.requests.find(x=>x.id===id);
+const rank=(d,r)=>d.donors.map(x=>({d:x,...calculateDonorMatchScore(x,r,getH(d,r.hid))})).filter(x=>x.score>0).sort((a,b)=>b.score-a.score);
+const final=r=>['Fulfilled','Completed','Rejected','Cancelled','Expired'].includes(r.status);
+const act={
+ create(d,f,user){const h=getH(d,f.hid);const id='R'+(d.requests.length+1);
+  d.requests.push({id,patient:f.patient,bg:f.bg,units:+f.units,got:0,hid:f.hid,city:h.city,urgency:f.urgency,deadline:+f.deadline,status:'Pending Verification',user,flagged:false,resp:{},created:Date.now()});
+  note(d,'coordinator','New request '+id+' awaiting verification');note(d,'admin','New request '+id+' created by '+user);
+  note(d,'requester:'+user,'Request '+id+' created, pending verification');logA(d,id+' created by '+user);return id},
+ verify(d,id){const r=getR(d,id);r.status='Matching';const n=rank(d,r).filter(x=>x.available&&x.eligible).length;
+  note(d,'requester:'+r.user,'Request '+id+' verified. '+n+' compatible donors found and ranked');
+  note(d,'coordinator','Request '+id+' verified, '+n+' ready donors ranked');logA(d,id+' verified, matching ran ('+n+' ready donors)')},
+ reject(d,id){const r=getR(d,id);r.status='Rejected';note(d,'requester:'+r.user,'Request '+id+' was rejected during verification');logA(d,id+' rejected')},
+ cancel(d,id){const r=getR(d,id);r.status='Cancelled';note(d,'coordinator','Request '+id+' cancelled by requester');logA(d,id+' cancelled')},
+ flag(d,id){const r=getR(d,id);r.flagged=!r.flagged;logA(d,id+(r.flagged?' flagged as suspicious':' flag removed'))},
+ alert(d,id,n,tag){const r=getR(d,id);let rd_=r.radius||10,bs=rank(d,r).filter(x=>x.available&&x.eligible&&!(x.d.id in r.resp)),c=[];while(rd_<=50){c=bs.filter(x=>x.dist<=rd_).slice(0,n);if(c.length>=Math.min(n,bs.length)||(c.length&&rd_>=50))break;rd_+=10}if(rd_>(r.radius||10))logA(d,id+': search radius expanded to '+Math.min(rd_,50)+' km');r.radius=Math.min(rd_,50);
+  if(!c.length){logA(d,id+': no further eligible donors in range');return 0}
+  c.forEach(x=>{r.resp[x.d.id]='Pending';note(d,'donor:'+x.d.id,(r.urgency==='Critical'?'URGENT ':'')+r.bg+' BLOOD REQUIRED, '+getH(d,r.hid).name+', approx '+x.dist+' km away, '+r.units+' units, needed within '+r.deadline+' h (in-app, SMS, email)')});
+  if(r.status==='Matching'||r.status==='Verified')r.status='Donors Notified';
+  note(d,'requester:'+r.user,c.length+' donors notified for '+id);logA(d,id+': '+c.length+' donors notified ('+tag+')');return c.length},
+ respond(d,id,did,ans){const r=getR(d,id),dn=d.donors.find(x=>x.id===did);r.resp[did]=ans;
+  note(d,'coordinator',dn.name+' '+ans.toLowerCase()+' request '+id);note(d,'requester:'+r.user,'A donor '+ans.toLowerCase()+' your request '+id);
+  if(ans==='Accepted'&&!final(r))r.status=r.got>0?'Partially Fulfilled':'Donation Coordinated';else if(r.status==='Donors Notified')r.status='Awaiting Response';
+  logA(d,dn.name+' '+ans.toLowerCase()+' '+id)},
+ confirm(d,id,did){const r=getR(d,id),dn=d.donors.find(x=>x.id===did);r.resp[did]='Donated';r.got++;dn.total++;dn.lastDays=0;
+  note(d,'donor:'+did,'Donation confirmed for '+id+'. Thank you!');note(d,'requester:'+r.user,'Donation confirmed for '+id+' ('+r.got+'/'+r.units+' units)');
+  if(r.got>=r.units){r.status='Fulfilled';r.doneAt=Date.now();note(d,'requester:'+r.user,'Request '+id+' fulfilled');note(d,'coordinator','Request '+id+' fulfilled')}else{r.status='Partially Fulfilled';if(acc(r)<r.units-r.got)act.alert(d,id,r.units-r.got-acc(r),'auto: units still needed')}
+  logA(d,'Donation confirmed: '+dn.name+' for '+id)},
+ fulfil(d,id){const r=getR(d,id);r.status='Fulfilled';r.doneAt=Date.now();note(d,'coordinator','Request '+id+' marked fulfilled');logA(d,id+' closed as fulfilled')}
+};
+
+const acc=r=>Object.values(r.resp).filter(x=>x==='Accepted').length;
+const tellDonors=(d,r,t)=>Object.keys(r.resp).forEach(k=>{if(r.resp[k]==='Pending'||r.resp[k]==='Accepted')note(d,'donor:'+k,t)});
+Object.assign(act,{
+ create(d,f,user){const h=getH(d,f.hid);const id='R'+(d.requests.length+1);
+  d.requests.push({id,patient:f.patient,bg:f.bg,units:+f.units,got:0,hid:f.hid,city:h.city,urgency:f.urgency,deadline:+f.deadline,status:'Matching',verified:false,user,flagged:false,resp:{},created:Date.now()});
+  note(d,'coordinator','New '+f.urgency+' request '+id+' ('+f.units+' units '+f.bg+') needs verification');note(d,'admin','Request '+id+' created by '+user);
+  note(d,'requester:'+user,'Request '+id+' created. Compatible donors are being alerted now');
+  act.alert(d,id,5,'instant alert on creation');logA(d,id+' created by '+user);return id},
+ verify(d,id){const r=getR(d,id);r.verified=true;note(d,'requester:'+r.user,'Request '+id+' was verified by the coordinator');tellDonors(d,r,'Request '+id+' is verified by the coordinator');logA(d,id+' verified')},
+ reject(d,id){const r=getR(d,id);r.status='Rejected';tellDonors(d,r,'Request '+id+' was withdrawn (rejected)');note(d,'requester:'+r.user,'Request '+id+' was rejected during verification');logA(d,id+' rejected')},
+ cancel(d,id,by='requester'){const r=getR(d,id);r.status='Cancelled';tellDonors(d,r,'Request '+id+' was cancelled');note(d,'coordinator','Request '+id+' cancelled by '+by);note(d,'requester:'+r.user,'Request '+id+' was cancelled by '+by);logA(d,id+' cancelled by '+by)},
+ respond(d,id,did,ans){const r=getR(d,id),dn=d.donors.find(x=>x.id===did),w=ans==='Accepted'?'accepted':'passed on';r.resp[did]=ans;r.rt=r.rt||{};r.rt[did]=Date.now();const bk=ans==='Accepted'?'acc':'dec';dn[bk]=(dn[bk]||0)+1;
+  note(d,'coordinator',dn.name+' '+w+' request '+id);note(d,'requester:'+r.user,'A donor '+w+' your request '+id);note(d,'admin',dn.name+' '+w+' request '+id);
+  if(ans==='Accepted'&&!final(r))r.status=r.got>0?'Partially Fulfilled':'Donation Coordinated';else if(r.status==='Donors Notified')r.status='Awaiting Response';
+  logA(d,dn.name+' '+w+' '+id);act.standDown(d,r);if(ans==='Declined'&&!final(r)&&acc(r)+r.got<r.units)act.alert(d,id,1,'auto replacement after pass')},
+ withdraw(d,id,did){const r=getR(d,id),dn=d.donors.find(x=>x.id===did);r.resp[did]='Declined';
+  note(d,'coordinator',dn.name+' withdrew from request '+id);note(d,'requester:'+r.user,'A donor withdrew from request '+id);note(d,'admin',dn.name+' withdrew from '+id);
+  if(r.status==='Donation Coordinated'&&!acc(r))r.status='Awaiting Response';logA(d,dn.name+' withdrew from '+id);
+  if(!final(r)&&acc(r)+r.got<r.units)act.alert(d,id,1,'auto replacement after withdrawal')},
+ dispatch(d,id,did){const r=getR(d,id),dn=d.donors.find(x=>x.id===did),h=getH(d,r.hid);
+  note(d,'donor:'+did,'Coordinator: please proceed to '+h.name+' for request '+id);note(d,'requester:'+r.user,'A confirmed donor is heading to '+h.name+' for request '+id);logA(d,dn.name+' sent to '+h.name+' for '+id)},
+ editReq(d,id,f){const r=getR(d,id),re=f.bg!==r.bg,h=getH(d,f.hid);
+  Object.assign(r,{patient:f.patient.trim(),bg:f.bg,units:+f.units,urgency:f.urgency,deadline:+f.deadline,hid:f.hid,city:h.city});
+  if(re){Object.keys(r.resp).forEach(k=>{if(r.resp[k]!=='Donated')delete r.resp[k]});if(!final(r)){r.status='Matching';act.alert(d,id,5,'re-matched after admin edit')}}
+  else tellDonors(d,r,'Request '+id+' was updated by the administrator');
+  note(d,'requester:'+r.user,'Administrator updated request '+id);note(d,'coordinator','Administrator updated request '+id);logA(d,'Admin edited '+id)},
+ addDonor(d,f){const id='d'+nid(),n=f.name.trim();d.donors.push({id,name:n,bg:f.bg,city:f.city,lat:CITY[f.city][0]+.01,lng:CITY[f.city][1]+.01,available:true,lastDays:90,total:0,phone:f.phone||'Not provided',email:f.email,suspended:false});
+  d.users.push({id:'u'+id,role:'donor',name:n,email:f.email,pw:H(f.pw),donorId:id});logA(d,'Admin added donor '+n)},
+ removeDonor(d,did){const dn=d.donors.find(x=>x.id===did);if(!dn)return;d.donors=d.donors.filter(x=>x.id!==did);d.users=d.users.filter(u=>u.donorId!==did);
+  d.requests.forEach(r=>{if(did in r.resp){delete r.resp[did];if(r.status==='Donation Coordinated'&&!acc(r))r.status='Awaiting Response'}});logA(d,'Admin removed donor '+dn.name)},
+ addStaff(d,f){d.users.push({id:'u'+nid(),role:'coordinator',name:f.name.trim(),email:f.email,pw:H(f.pw)});logA(d,'Admin added coordinator '+f.name.trim())},
+ removeUser(d,uid){const u=d.users.find(x=>x.id===uid);if(!u)return;if(u.role==='requester')d.requests.forEach(r=>{if(r.user===u.name&&!final(r))act.cancel(d,r.id,'admin (account removed)')});d.users=d.users.filter(x=>x.id!==uid);logA(d,'Admin removed '+u.role+' '+u.name)}
+});
+
+const aiPri=f=>(+f.deadline<=6||+f.units>=4)?'Critical':(+f.deadline<=24||+f.units>=2)?'Urgent':'Normal';
+const SM={en:(r,h)=>r.urgency.toUpperCase()+': '+r.bg+' blood needed at '+h.name+', '+r.units+' unit(s) within '+r.deadline+' h',
+ ur:(r,h)=>r.urgency+': '+r.bg+' خون درکار — '+h.name+'، '+r.units+' یونٹ، '+r.deadline+' گھنٹوں میں',
+ sd:(r,h)=>r.urgency+': '+r.bg+' رت گھربل — '+h.name+'، '+r.units+' يونٽ، '+r.deadline+' ڪلاڪن اندر'};
+const summ=(r,h,l)=>SM[l](r,h);
+const ins=db=>{const rq=db.requests,dm=BG.map(b=>[b,rq.filter(r=>r.bg===b).length]).sort((a,b)=>b[1]-a[1]),sp=BG.map(b=>[b,db.donors.filter(x=>x.bg===b&&x.available&&x.lastDays>=56).length]).sort((a,b)=>a[1]-b[1]),low=[...new Set(db.hospitals.flatMap(h=>BG.filter(b=>h.stock[b]<3)))],cc=Object.keys(CITY).map(c=>[c,rq.filter(r=>r.city===c).length]).sort((a,b)=>b[1]-a[1]);
+ return ['Highest demand: '+dm[0][0]+' ('+dm[0][1]+' requests). Busiest city: '+cc[0][0],'Thinnest ready-donor supply: '+sp[0][0]+' ('+sp[0][1]+' ready donors)','Low hospital stock (under 3 units): '+(low.join(', ')||'none'),rq.filter(r=>r.urgency==='Critical'&&!final(r)).length+' critical requests still open']};
+Object.assign(act,{
+ standDown(d,r){if(final(r)||acc(r)+r.got<r.units)return;Object.keys(r.resp).forEach(k=>{if(r.resp[k]==='Pending'){r.resp[k]='Not needed';note(d,'donor:'+k,'Request '+r.id+' now has enough donors. No action needed, thank you')}});logA(d,r.id+': enough donors accepted, remaining alerts stopped')},
+ complete(d,id){const r=getR(d,id);r.status='Completed';note(d,'coordinator','Request '+id+' marked completed by requester');logA(d,id+' completed')},
+ expire(d){d.requests.forEach(r=>{if(!final(r)&&r.created+r.deadline*3600000<Date.now()){r.status='Expired';tellDonors(d,r,'Request '+r.id+' has expired');note(d,'requester:'+r.user,'Request '+r.id+' expired before it was fulfilled');logA(d,r.id+' expired')}})},
+ report(d,id,by){const r=getR(d,id);r.reports=(r.reports||0)+1;if(r.reports>=2)r.flagged=true;note(d,'admin','Request '+id+' reported as suspicious by '+by);logA(d,id+' reported suspicious by '+by)}
+});
+function SystemDesign({db}){const rs=db.requests.reduce((a,r)=>a+Object.keys(r.resp).length,0);
+ const E=[['Users','id, role, name, email, password hash',db.users.length],['Donors','blood group, age, location, availability, last donation, pause, response history',db.donors.length],['Hospitals / blood banks','name, city, coordinates, stock per blood group',db.hospitals.length],['Blood requests','patient, group, units, hospital, urgency, deadline, status, verified, flagged, reports, radius',db.requests.length],['Donor responses','donor to request: Pending, Accepted, Declined, Donated, Not needed, response time',rs],['Notifications','recipient, text, time, read',db.notes.length],['Activity log','time, event',db.logs.length]];
+ return <div className="space-y-4"><Card><div className="font-bold text-sm mb-2">Workflow</div><div className="text-sm text-slate-300">Request created → duplicate check → verified → compatible donors found (ABO/Rh rules) → filtered by availability, age, 56 day rule, distance → ranked → Top 5 notified → radius expands (10 to 50 km) → donors respond → alerts stop once enough accept → donation confirmed by QR → Fulfilled → Completed → statistics updated. Requests past their deadline become Expired.</div></Card>
+ <Card><div className="font-bold text-sm mb-2">Data model</div><div className="tw"><table className="w-full text-sm"><thead><tr className="text-left text-slate-400 text-xs"><th className="py-1">Entity</th><th>Fields</th><th>Records</th></tr></thead><tbody>{E.map(e=><tr key={e[0]} className="border-t border-slate-700/50"><td className="py-1.5 font-semibold">{e[0]}</td><td className="text-slate-400">{e[1]}</td><td>{e[2]}</td></tr>)}</tbody></table></div></Card></div>}
+// ---- small UI pieces ----
+const tone={'Pending Verification':'amber','Verified':'emerald','✓ Verified Blood Request':'emerald','Partially Fulfilled':'amber','Completed':'emerald','Expired':'red','Not needed':'slate','Matching':'emerald','Donors Notified':'emerald','Awaiting Response':'amber','Donation Coordinated':'emerald','Fulfilled':'emerald','Rejected':'red','Cancelled':'red','Accepted':'emerald','Donated':'emerald','Declined':'red','Pending':'amber',Critical:'red',Urgent:'amber',Normal:'slate',Yes:'emerald',No:'red'};
+const TC={amber:'ll-warn',emerald:'ll-ok',red:'ll-bad',slate:'ll-neutral'};
+const Badge=({t})=><span className={'inline-block px-2 py-0.5 rounded-full text-xs font-semibold border whitespace-nowrap '+TC[tone[t]||'slate']}>{t}</span>;
+const Card=({children,cls=''})=><div className={'bg-slate-800 border border-slate-700/50 rounded-xl p-4 '+cls}>{children}</div>;
+const Btn=({children,onClick,v='p',cls='',disabled})=><button disabled={disabled} onClick={onClick} className={'px-3 py-1.5 rounded-lg text-sm font-semibold disabled:opacity-40 '+(v==='p'?'bg-emerald-500 text-slate-900 hover:bg-emerald-400':v==='d'?'bg-red-700 text-white hover:bg-red-600':'ll-sec')+' '+cls}>{children}</button>;
+const Stat=({l,v,c})=><Card><div className="text-xs uppercase tracking-wide text-slate-400">{l}</div><div className={'text-2xl font-extrabold mt-1 '+(c||'text-white')}>{v}</div></Card>;
+const Field=({l,children})=><label className="block text-sm text-slate-300 space-y-1"><span>{l}</span>{children}</label>;
+const FS=({v,set,k,ph,opts})=><select value={v[k]} onChange={e=>set({...v,[k]:e.target.value})}><option value="">{ph}</option>{opts.map(o=>Array.isArray(o)?<option key={o[0]} value={o[0]}>{o[1]}</option>:<option key={o}>{o}</option>)}</select>;
+const DT=[[24,'Last 24 hours'],[168,'Last 7 days'],[720,'Last 30 days']],VF=[['v','Verified'],['u','Not verified']];
+const Bars=({data,color='bg-emerald-700'})=>{const m=Math.max(1,...data.map(x=>x[1]));return <div className="space-y-2">{data.map(([k,v])=><div key={k} className="flex items-center gap-2 text-xs"><span className="w-24 text-slate-400 shrink-0">{k}</span><div className="flex-1 bg-slate-900 rounded h-3"><div className={color+' h-3 rounded'} style={{width:(v/m*100)+'%'}}></div></div><span className="w-6 text-right">{v}</span></div>)}</div>};
+const Pipeline=({status})=>{if(['Rejected','Cancelled','Expired'].includes(status))return <Badge t={status}/>;const i=STEPS.indexOf(status==='Partially Fulfilled'?'Donation Coordinated':status);
+ return <div className="flex flex-wrap gap-1.5">{status==='Partially Fulfilled'&&<Badge t={status}/>}{STEPS.map((s,k)=><span key={s} className={'px-2 py-1 rounded text-[11px] font-semibold '+(k<i?'bg-emerald-900/60 text-emerald-300':k===i?'bg-emerald-500 text-slate-900':'bg-slate-900 text-slate-500')}>{k<i?'✓ ':''}{s}</span>)}</div>};
+const Empty=({t})=><div className="text-sm text-slate-400 py-6 text-center">{t}</div>;
+function QR({text}){const r=useRef();useEffect(()=>{r.current.innerHTML='';new QRCode(r.current,{text,width:170,height:170,colorDark:'#111827',colorLight:'#ffffff'})},[text]);return <div ref={r} className="bg-white p-2 rounded-lg inline-block"></div>}
+function Modal({children,close}){return <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4" onClick={close}><div className="bg-slate-800 border border-slate-700 rounded-xl p-5 max-w-sm w-full text-center space-y-3" onClick={e=>e.stopPropagation()}>{children}</div></div>}
+function Shell({tabs,tab,setTab,children}){return <div><div className="tw flex gap-1 border-b border-slate-700/60 mb-4">{tabs.map(([id,l,n])=><button key={id} onClick={()=>setTab(id)} className={'px-3 py-2 text-sm font-semibold whitespace-nowrap border-b-2 '+(tab===id?'border-emerald-500 text-emerald-300':'border-transparent text-slate-400 hover:text-slate-200')}>{l}{n>0&&<span className="ml-1.5 bg-red-700 text-white text-[10px] rounded-full px-1.5 py-0.5">{n}</span>}</button>)}</div>{children}</div>}
+function Notes({c,to}){const ns=c.db.notes.filter(n=>n.to===to);return <Card>
+ <div className="flex justify-between mb-2"><h3 className="font-bold">Notifications</h3><Btn v="s" onClick={()=>c.upd(d=>d.notes.forEach(n=>{if(n.to===to)n.read=true}))}>Mark all read</Btn></div>
+ {ns.length?ns.map(n=><div key={n.id} className={'py-2 border-t border-slate-700/50 text-sm flex gap-2 '+(n.read?'text-slate-400':'text-white')}><span className={'mt-1.5 w-2 h-2 rounded-full shrink-0 '+(n.read?'bg-slate-600':'bg-emerald-500')}></span><span className="flex-1">{n.text}</span><span className="text-xs text-slate-500">{ago(n.ts)}</span></div>):<Empty t="No notifications yet"/>}</Card>}
+const unread=(c,to)=>c.db.notes.filter(n=>n.to===to&&!n.read).length;
+const ReqForm=({c,onDone})=>{const {db,lang}=c;const t=k=>L[k][lang];const [f,setF]=useState({patient:'',bg:'B+',units:1,city:'Karachi',hid:db.hospitals.find(x=>x.city==='Karachi').id,urgency:'Urgent',deadline:6});const [err,setErr]=useState('');
+ const h=getH(db,f.hid)||db.hospitals.find(x=>x.city===f.city);const sug=aiPri(f);const s=k=>e=>setF({...f,[k]:e.target.value});
+ const go=()=>{if(!h)return setErr('No hospital available in this city yet');if(f.patient.trim().length<3)return setErr('Enter the patient name');if(f.units<1||f.units>10)return setErr('Units must be between 1 and 10');if(f.deadline<1||f.deadline>72)return setErr('Deadline must be 1 to 72 hours');const dup=db.requests.find(r=>!final(r)&&r.hid===f.hid&&r.bg===f.bg&&r.patient.trim().toLowerCase()===f.patient.trim().toLowerCase());if(dup)return setErr('Possible duplicate: active request '+dup.id+' already exists for this patient at this hospital.');setErr('');let id;c.upd(d=>{id=act.create(d,f,c.user)});onDone()};
+ return <Card cls="max-w-xl space-y-3"><h3 className="font-bold text-lg">New blood request</h3>
+ <Field l={t('patient')}><input value={f.patient} onChange={s('patient')}/></Field>
+ <div className="grid grid-cols-2 gap-3"><Field l={t('group')}><select value={f.bg} onChange={s('bg')}>{BG.map(b=><option key={b}>{b}</option>)}</select></Field>
+ <Field l={t('units')}><input type="number" min="1" max="10" value={f.units} onChange={s('units')}/></Field></div>
+ <Field l="City"><select value={f.city} onChange={e=>{const cy=e.target.value,hh=db.hospitals.find(x=>x.city===cy);setF({...f,city:cy,hid:hh?hh.id:''})}}>{Object.keys(CITY).map(x=><option key={x}>{x}</option>)}</select></Field>
+ <Field l={t('hospital')}><select value={f.hid} onChange={s('hid')}>{db.hospitals.filter(x=>x.city===f.city).map(x=><option key={x.id} value={x.id}>{x.name}</option>)}</select></Field>
+ <div className="grid grid-cols-2 gap-3"><Field l={t('urgency')}><select value={f.urgency} onChange={s('urgency')}>{['Normal','Urgent','Critical'].map(b=><option key={b}>{b}</option>)}</select></Field>
+ <Field l={t('deadline')}><input type="number" min="1" max="72" value={f.deadline} onChange={s('deadline')}/></Field></div>
+ <div className="text-xs text-slate-400">AI priority suggestion: <b className="text-emerald-300">{sug}</b>{sug!==f.urgency&&<button type="button" className="underline ml-2 text-emerald-300" onClick={()=>setF({...f,urgency:sug})}>Apply</button>}<div className="mt-1">Donor-friendly summary: {summ(f,h,lang)}</div></div>{err&&<div className="text-sm text-red-400">{err}</div>}
+ <Btn onClick={go}>{t('submit')}</Btn></Card>};
+
+// ---- Requester ----
+function Requester({c}){const {db,upd,user}=c;const [tab,setTab]=useState(c.intent||'new');const [map,setMap]=useState(null);const [fl,setFl]=useState({bg:'',urg:'',city:'',st:'',hid:'',ver:'',dt:''});
+ const mine=db.requests.filter(r=>r.user===user);
+ const board=db.requests.filter(r=>!final(r)&&(!fl.bg||r.bg===fl.bg)&&(!fl.urg||r.urgency===fl.urg)&&(!fl.city||r.city===fl.city)&&(!fl.st||r.status===fl.st)&&(!fl.hid||r.hid===fl.hid)&&(!fl.ver||(fl.ver==='v')===!!r.verified)&&(!fl.dt||r.created>=Date.now()-fl.dt*36e5));
+ return <Shell tabs={[['new','New request'],['mine','My requests',0],['board','Active requests'],['notes','Notifications',unread(c,'requester:'+user)]]} tab={tab} setTab={setTab}>
+ {map&&<LiveMap c={c} r={getR(db,map.r)} did={map.d} close={()=>setMap(null)}/>}
+ {tab==='new'&&<ReqForm c={c} onDone={()=>setTab('mine')}/>}
+ {tab==='mine'&&<div className="space-y-4">{mine.length?mine.map(r=>{const rk=rank(db,r).filter(x=>r.resp[x.d.id]);return <Card key={r.id} cls="space-y-3">
+  <div className="flex flex-wrap justify-between gap-2"><div><div className="font-bold">{r.id} · {r.patient}</div><div className="text-sm text-slate-400">{r.units} units {r.bg} · {getH(db,r.hid).name}, {r.city} · {r.got}/{r.units} donated</div></div><div className="flex gap-2 items-start"><Badge t={r.verified?'✓ Verified Blood Request':'Pending Verification'}/><Badge t={r.urgency}/><span className="text-xs text-slate-400">{final(r)?'':left(r)}</span></div></div>
+  <Pipeline status={r.status}/>
+  {!r.verified&&!final(r)&&<div className="text-sm text-amber-300">Donors have been alerted. A coordinator is now verifying this request.</div>}
+  {rk.length>0&&<div className="tw"><table className="w-full text-sm"><thead><tr className="text-left text-slate-400 text-xs"><th className="py-1">Donor</th><th>Group</th><th>Location</th><th>Available</th><th>Response</th><th>Contact</th><th></th></tr></thead><tbody>{rk.map(x=>{const m=mask(x.d,r.resp[x.d.id],x.dist);return <tr key={x.d.id} className="border-t border-slate-700/50"><td className="py-1.5">{m.label}</td><td>{x.d.bg}</td><td>{x.d.city}</td><td><Badge t={x.available?'Yes':'No'}/></td><td><Badge t={r.resp[x.d.id]}/></td><td className="text-xs">{m.phone}</td><td>{r.resp[x.d.id]==='Accepted'&&<Btn v="s" onClick={()=>setMap({r:r.id,d:x.d.id})}>Live radar</Btn>}</td></tr>})}</tbody></table></div>}
+  {(!final(r)||r.status==='Fulfilled')&&<div className="flex gap-2">{r.status==='Fulfilled'&&<Btn onClick={()=>upd(d=>act.complete(d,r.id))}>Mark as completed</Btn>}{['Donation Coordinated','Partially Fulfilled'].includes(r.status)&&<Btn onClick={()=>upd(d=>act.fulfil(d,r.id))}>Mark as fulfilled</Btn>}{!final(r)&&<Btn v="d" onClick={()=>upd(d=>act.cancel(d,r.id))}>Cancel request</Btn>}</div>}
+  </Card>}):<Empty t="You have no requests yet"/>}</div>}
+ {tab==='board'&&<div className="space-y-3"><div className="grid grid-cols-3 gap-2"><select value={fl.bg} onChange={e=>setFl({...fl,bg:e.target.value})}><option value="">All groups</option>{BG.map(b=><option key={b}>{b}</option>)}</select><select value={fl.urg} onChange={e=>setFl({...fl,urg:e.target.value})}><option value="">All urgency</option>{['Normal','Urgent','Critical'].map(b=><option key={b}>{b}</option>)}</select><select value={fl.city} onChange={e=>setFl({...fl,city:e.target.value})}><option value="">All cities</option>{Object.keys(CITY).map(b=><option key={b}>{b}</option>)}</select><select value={fl.st} onChange={e=>setFl({...fl,st:e.target.value})}><option value="">All statuses</option>{STEPS.slice(0,-1).concat(['Partially Fulfilled']).map(b=><option key={b}>{b}</option>)}</select><select value={fl.hid} onChange={e=>setFl({...fl,hid:e.target.value})}><option value="">All hospitals</option>{db.hospitals.map(h=><option key={h.id} value={h.id}>{h.name}</option>)}</select><FS v={fl} set={setFl} k="ver" ph="All verification" opts={VF}/><FS v={fl} set={setFl} k="dt" ph="Any date" opts={DT}/></div>
+  <Card><div className="tw"><table className="w-full text-sm"><thead><tr className="text-left text-slate-400 text-xs"><th className="py-1">ID</th><th>Patient</th><th>Group</th><th>Units</th><th>City</th><th>Urgency</th><th>Status</th></tr></thead><tbody>{board.map(r=><tr key={r.id} className="border-t border-slate-700/50"><td className="py-1.5">{r.id}</td><td>{r.patient.split(' ').map(w=>w[0]+'.').join('')}</td><td>{r.bg}</td><td>{r.got}/{r.units}</td><td>{r.city}</td><td><Badge t={r.urgency}/></td><td><Badge t={r.status}/></td></tr>)}</tbody></table>{!board.length&&<Empty t="No active requests match these filters"/>}</div></Card></div>}
+ {tab==='notes'&&<Notes c={c} to={'requester:'+user}/>}</Shell>}
+
+// ---- Donor ----
+function Donor({c}){const {db,upd,me}=c;const [tab,setTab]=useState('requests');const [qr,setQr]=useState(null);const [map,setMap]=useState(null);
+ const dn=db.donors.find(x=>x.id===me);if(!dn)return null;
+ const set=(k,v)=>upd(d=>{const x=d.donors.find(y=>y.id===me);x[k]=v;if(k==='city'){x.lat=CITY[v][0]+.01;x.lng=CITY[v][1]+.01}});
+ const pend=db.requests.filter(r=>r.resp[me]==='Pending'&&!final(r));
+ const mine=db.requests.filter(r=>['Accepted','Donated'].includes(r.resp[me]));
+ const elig=dn.lastDays>=56&&(dn.age||28)>=18&&(dn.age||28)<=65;
+ return <Shell tabs={[['requests','Requests',pend.length],['donations','My donations'],['profile','Profile'],['notes','Notifications',unread(c,'donor:'+me)]]} tab={tab} setTab={setTab}>
+ {qr&&<Modal close={()=>setQr(null)}><h3 className="font-bold">Donation QR</h3><QR text={qrPay(getR(db,qr),me)}/><div className="font-mono text-[11px] break-all text-slate-500">{qrPay(getR(db,qr),me)}</div><p className="text-xs text-slate-400">Show this code to hospital staff. They will scan it to confirm your donation.</p><Btn v="s" onClick={()=>setQr(null)}>Close</Btn></Modal>}
+ {map&&<LiveMap c={c} r={getR(db,map)} did={me} close={()=>setMap(null)}/>}
+ {tab==='requests'&&<div className="space-y-3">{!dn.available&&<Card cls="text-amber-300 text-sm">You are marked unavailable. New requests will not be sent to you.</Card>}
+  {pend.length?pend.map(r=><Card key={r.id} cls="space-y-2"><div className="flex justify-between"><div className="font-bold">{r.units} units {r.bg} needed</div><div className="flex gap-2"><Badge t={r.verified?'✓ Verified Blood Request':'Pending Verification'}/><Badge t={r.urgency}/></div></div>
+   <div className="text-sm font-semibold text-emerald-300">{summ(r,getH(db,r.hid),c.lang)}</div><div className="text-sm text-slate-300">{getH(db,r.hid).name}, {r.city} · {km(dn,getH(db,r.hid))} km from you · {left(r)}</div>
+   <div className="flex gap-2"><Btn disabled={!elig} onClick={()=>upd(d=>act.respond(d,r.id,me,'Accepted'))}>Accept and proceed</Btn><Btn v="d" onClick={()=>upd(d=>act.respond(d,r.id,me,'Declined'))}>Pass on request</Btn><Btn v="s" onClick={()=>{upd(d=>act.report(d,r.id,dn.name));alert('Reported to the administrator')}}>Report suspicious</Btn></div>
+   {!elig&&<div className="text-xs text-red-300">You donated {dn.lastDays} days ago. 56 days are required.</div>}</Card>):<Empty t="No pending requests for you right now"/>}</div>}
+ {tab==='donations'&&<div className="space-y-3">{mine.length?mine.map(r=><Card key={r.id} cls="flex flex-wrap justify-between items-center gap-2"><div><div className="font-bold">{r.id} · {r.units} units {r.bg}</div><div className="text-sm text-slate-400">{getH(db,r.hid).name}</div></div><div className="flex gap-2 items-center"><Badge t={r.resp[me]}/>{r.resp[me]==='Accepted'&&<><Btn v="s" onClick={()=>setMap(r.id)}>Live map</Btn><Btn onClick={()=>setQr(r.id)}>Show QR</Btn><Btn v="d" onClick={()=>upd(d=>act.withdraw(d,r.id,me))}>Withdraw</Btn></>}</div></Card>):<Empty t="No accepted or completed donations yet"/>}</div>}
+ {tab==='profile'&&<Card cls="max-w-xl space-y-3"><div className="flex justify-between items-center"><h3 className="font-bold text-lg">Donor profile</h3><Badge t={elig?'Yes':'No'}/></div><div className="text-xs text-slate-400 -mt-2">Eligible to donate: {elig?'yes':'not yet, '+(56-dn.lastDays)+' days to go'}</div>
+  <div className="grid grid-cols-2 gap-3"><Field l="Name"><input value={dn.name} onChange={e=>set('name',e.target.value)}/></Field><Field l="Phone"><input value={dn.phone} onChange={e=>set('phone',e.target.value)}/></Field>
+  <Field l="Blood group"><select value={dn.bg} onChange={e=>set('bg',e.target.value)}>{BG.map(b=><option key={b}>{b}</option>)}</select></Field>
+  <Field l="City"><select value={dn.city} onChange={e=>set('city',e.target.value)}>{Object.keys(CITY).map(b=><option key={b}>{b}</option>)}</select></Field>
+  <Field l="Days since last donation"><input type="number" min="0" value={dn.lastDays} onChange={e=>set('lastDays',Math.max(0,+e.target.value||0))}/></Field>
+  <Field l="Age (18 to 65 to donate)"><input type="number" min="18" max="65" value={dn.age||28} onChange={e=>set('age',Math.max(0,+e.target.value||0))}/></Field><Field l="Temporarily unavailable"><select value={dn.pauseUntil>Date.now()?'on':''} onChange={e=>set('pauseUntil',e.target.value?Date.now()+7*864e5:0)}><option value="">No</option><option value="on">Pause for 7 days</option></select></Field><div className="text-sm text-slate-300 pt-6">Total donations: <b className="text-emerald-300">{dn.total}</b></div></div>
+  <label className="flex items-center gap-3 cursor-pointer"><button onClick={()=>set('available',!dn.available)} className={'w-11 h-6 rounded-full p-0.5 '+(dn.available?'bg-emerald-700':'bg-slate-600')}><span className={'block w-5 h-5 bg-white rounded-full transition-transform '+(dn.available?'translate-x-5':'')}></span></button><span className="text-sm">Available to donate: <b>{dn.available?'ON':'OFF'}</b></span></label><div className="text-xs text-slate-400">Final medical eligibility must be confirmed by qualified healthcare staff or the receiving blood facility. Your phone and email are shared only after you accept a request.</div></Card>}
+ {tab==='notes'&&<Notes c={c} to={'donor:'+me}/>}</Shell>}
+
+// ---- Coordinator ----
+function Radar({rk,r}){return <svg viewBox="-110 -110 220 220" className="w-full max-w-[260px] mx-auto"><circle r="100" fill="#EEF1EC" stroke="#C9D1C4"/><circle r="66" fill="none" stroke="#C9D1C4" strokeDasharray="3"/><circle r="33" fill="none" stroke="#C9D1C4" strokeDasharray="3"/>
+ <text x="2" y="-35" fontSize="7" fill="#64748b">10 km</text><text x="2" y="-68" fontSize="7" fill="#64748b">20 km</text><text x="2" y="-101" fontSize="7" fill="#64748b">30 km</text>
+ <circle r="5" fill="#DC2626"/>{rk.map((x,i)=>{const a=i*2.4+.5,d=Math.min(x.dist,30)/30*100;const col=r.resp[x.d.id]==='Accepted'||r.resp[x.d.id]==='Donated'?'#047857':x.available&&x.eligible?'#10B981':'#9CA3AF';
+ return <g key={x.d.id}><circle cx={Math.cos(a)*d} cy={Math.sin(a)*d} r="4.5" fill={col}/><text x={Math.cos(a)*d+6} y={Math.sin(a)*d+3} fontSize="7" fill="#374151">{x.dist}km</text></g>})}</svg>}
+function Coordinator({c}){const {db,upd}=c;const [tab,setTab]=useState('queue');const [sel,setSel]=useState('R1');const [auto,setAuto]=useState(true);const [hc,setHc]=useState({});const [qr,setQr]=useState(null);const [map,setMap]=useState(null);
+ const pend=db.requests.filter(r=>!r.verified&&!final(r));
+ const live=db.requests.filter(r=>!final(r));
+ const r=db.requests.find(x=>x.id===sel&&live.includes(x))||live[0];
+ const rk=r?rank(db,r):[];
+ const alertTop=()=>{upd(d=>act.alert(d,r.id,5,'top 5'));if(auto)setTimeout(()=>upd(d=>{const q=getR(d,r.id);if(!final(q)&&q.got<q.units&&q.status!=='Donation Coordinated')act.alert(d,r.id,10,'auto radius expansion')}),20000)};
+ const stock=(h,b,n)=>upd(d=>{const x=getH(d,h).stock;x[b]=Math.max(0,x[b]+n)});
+ return <Shell tabs={[['queue','Verification queue',pend.length],['match','Matching & response'],['stock','Hospital stock'],['stats','Monitor'],['notes','Notifications',unread(c,'coordinator')]]} tab={tab} setTab={setTab}>
+ {qr&&<ScanModal c={c} close={()=>setQr(null)}/>}{map&&<LiveMap c={c} r={getR(db,map.r)} did={map.d} close={()=>setMap(null)}/>}
+ {tab==='queue'&&<div className="space-y-3">{pend.length?pend.map(q=><Card key={q.id} cls="flex flex-wrap justify-between gap-3 items-center"><div><div className="font-bold">{q.id} · {q.units} units {q.bg} <Badge t={q.urgency}/></div><div className="text-sm text-slate-400">{q.patient} · {getH(db,q.hid).name} · by {q.user} · {ago(q.created)}</div></div><div className="flex flex-wrap gap-2 items-center"><label className="text-xs text-slate-300 flex items-center gap-1"><input type="checkbox" className="!w-auto" checked={!!hc[q.id]} onChange={e=>setHc({...hc,[q.id]:e.target.checked})}/>Hospital contact confirmed</label><Btn onClick={()=>{upd(d=>{act.verify(d,q.id);if(hc[q.id]){getR(d,q.id).hcv=true;logA(d,q.id+': hospital contact confirmed by phone')}});setSel(q.id);setTab('match')}}>Verify request</Btn><Btn v="d" onClick={()=>upd(d=>act.reject(d,q.id))}>Reject</Btn></div></Card>):<Empty t="Queue is clear. All requests are verified."/>}</div>}
+ {tab==='match'&&(r?<div className="space-y-4"><div className="tw flex gap-2">{live.map(q=><button key={q.id} onClick={()=>setSel(q.id)} className={'px-3 py-1.5 rounded-lg text-sm whitespace-nowrap '+(q.id===r.id?'bg-emerald-500 text-slate-900 font-bold':'bg-slate-800 text-slate-300')}>{q.id} · {q.bg}</button>)}</div>
+  <Card cls="space-y-3"><div className="flex flex-wrap justify-between gap-2"><div><div className="font-bold">{r.id} · {r.patient} · {r.units} units {r.bg} ({r.got} done)</div><div className="text-sm text-slate-400">{getH(db,r.hid).name} · {left(r)}</div></div><div className="flex gap-2"><Badge t={r.verified?'✓ Verified Blood Request':'Pending Verification'}/><Badge t={r.urgency}/></div></div><Pipeline status={r.status}/>
+  <div className="flex flex-wrap gap-2 items-center"><Btn onClick={alertTop}>Alert Top 5 donors</Btn><Btn v="s" onClick={()=>setQr(1)}>Scan donor QR</Btn><Btn v="s" onClick={()=>upd(d=>act.alert(d,r.id,10,'manual radius expansion'))}>Expand radius (+10 donors)</Btn>
+  <label className="text-xs text-slate-300 flex items-center gap-1"><input type="checkbox" className="!w-auto" checked={auto} onChange={e=>setAuto(e.target.checked)}/>Auto expand after 20 s</label>
+  {r.got>0&&<Btn v="s" onClick={()=>upd(d=>act.fulfil(d,r.id))}>Close as fulfilled</Btn>}</div></Card>
+  <div className="grid lg:grid-cols-3 gap-4"><Card><div className="text-sm font-bold mb-2">Donor radar</div><Radar rk={rk} r={r}/><div className="text-[11px] text-slate-400 mt-2 text-center">Red: hospital · green: ready · grey: unavailable · dark green: accepted</div></Card>
+  <Card cls="lg:col-span-2"><div className="tw"><table className="w-full text-sm"><thead><tr className="text-left text-slate-400 text-xs"><th className="py-1">#</th><th>Donor</th><th>Grp</th><th>Km</th><th>Score</th><th>Avail</th><th>Eligible</th><th>Accept %</th><th>Response</th><th>Contact</th><th></th></tr></thead><tbody>
+  {rk.map((x,i)=>{const rs=r.resp[x.d.id];const m=mask(x.d,rs,x.dist);return <tr key={x.d.id} className="border-t border-slate-700/50 align-middle"><td className="py-1.5">{i+1}</td><td>{rs==='Accepted'||rs==='Donated'?x.d.name:x.d.name.split(' ')[0]}<div className="text-[11px] text-slate-500">{x.d.city}</div></td><td>{x.d.bg}</td><td>{x.dist}</td><td className="font-bold text-emerald-300">{x.eligible?x.score+'%':<span className="text-red-300 text-xs">Not Eligible</span>}</td><td><Badge t={x.available?'Yes':'No'}/></td><td><Badge t={x.eligible?'Yes':'No'}/></td><td>{acceptProb(x)}%</td><td>{rs?<Badge t={rs}/>:<span className="text-slate-500 text-xs">Not contacted</span>}</td><td className="text-xs">{m.phone}</td><td>{rs==='Accepted'&&<div className="flex gap-1"><Btn v="s" onClick={()=>upd(d=>act.dispatch(d,r.id,x.d.id))}>Send to hospital</Btn><Btn v="s" onClick={()=>setMap({r:r.id,d:x.d.id})}>Live radar</Btn><Btn onClick={()=>setQr({r:r.id,d:x.d.id})}>Scan QR</Btn></div>}</td></tr>})}</tbody></table></div>
+  <div className="text-xs text-slate-500 mt-2">Incompatible donors score 0% and are hidden. Contact details unlock only after a donor accepts. Final medical eligibility must be confirmed by qualified healthcare staff or the receiving blood facility.</div></Card></div></div>:<Empty t="No verified requests to match. Verify one from the queue."/>)}
+ {tab==='stock'&&<StockTable c={c} stock={stock}/>}
+ {tab==='stats'&&<Monitor c={c}/>}
+ {tab==='notes'&&<Notes c={c} to="coordinator"/>}</Shell>}
+function StockTable({c,stock}){return <div className="space-y-3">{c.db.hospitals.map(h=><Card key={h.id}><div className="font-bold mb-2">{h.name} <span className="text-sm text-slate-400 font-normal">{h.city}</span></div><div className="grid grid-cols-4 md:grid-cols-8 gap-2">{BG.map(b=>{const n=h.stock[b];return <div key={b} className={'rounded-lg p-2 text-center border '+(n<3?'border-red-700 bg-red-900/20':'border-slate-700/60 bg-slate-900')}><div className="text-xs text-slate-400">{b}</div><div className={'font-bold '+(n<3?'text-red-300':'text-white')}>{n}</div>{n<3&&<div className="text-[10px] text-red-300">Low</div>}<div className="flex gap-1 justify-center mt-1"><button onClick={()=>stock(h.id,b,-1)} className="w-5 h-5 bg-slate-700 rounded text-xs">−</button><button onClick={()=>stock(h.id,b,1)} className="w-5 h-5 bg-slate-700 rounded text-xs">+</button></div></div>})}</div></Card>)}</div>}
+function metrics(db){const rq=db.requests,fu=rq.filter(r=>['Fulfilled','Completed'].includes(r.status)),act_=rq.filter(r=>!final(r));
+ const resp=rq.flatMap(r=>Object.values(r.resp)),dons=resp.filter(x=>x==='Donated').length;
+ const hrs=fu.filter(r=>r.doneAt).map(r=>(r.doneAt-r.created)/3600000);
+ const rts=rq.flatMap(r=>Object.keys(r.rt||{}).map(k=>(r.rt[k]-r.created)/60000));return {rate:Math.round((fu.length+db.base.fulfilled)/(rq.length+db.base.total)*100),rsp:rts.length?Math.round(rts.reduce((a,b)=>a+b,0)/rts.length):'n/a',regd:db.donors.length,total:rq.length+db.base.total,active:act_.length,fulfilled:fu.length+db.base.fulfilled,pending:rq.filter(r=>!r.verified&&!final(r)).length,crit:act_.filter(r=>r.urgency==='Critical').length,avail:db.donors.filter(x=>x.available&&!x.suspended&&x.lastDays>=56).length,resp:resp.filter(x=>x!=='Pending').length,dons,avg:hrs.length?(hrs.reduce((a,b)=>a+b,0)/hrs.length).toFixed(1):'2.4'}}
+function Monitor({c}){const {db}=c,m=metrics(db);
+ const byBg=BG.map(b=>[b,db.requests.filter(r=>r.bg===b).length]),dBg=BG.map(b=>[b,db.donors.filter(x=>x.bg===b).length]),bySt=STEPS.concat(['Partially Fulfilled','Rejected','Cancelled','Expired']).map(s=>[s.replace('Pending Verification','Pending'),db.requests.filter(r=>r.status===s).length]);
+ return <div className="space-y-4"><div className="grid grid-cols-2 md:grid-cols-4 gap-3"><Stat l="Total requests" v={m.total}/><Stat l="Active" v={m.active}/><Stat l="Fulfilled" v={m.fulfilled} c="text-emerald-300"/><Stat l="Pending" v={m.pending} c="text-amber-300"/><Stat l="Available donors" v={m.avail}/><Stat l="Donor responses" v={m.resp}/><Stat l="Successful donations" v={m.dons} c="text-emerald-300"/><Stat l="Critical active" v={m.crit} c="text-red-400"/><Stat l="Fulfilment rate" v={m.rate+'%'} c="text-emerald-300"/><Stat l="Avg fulfilment (h)" v={m.avg}/><Stat l="Avg response (min)" v={m.rsp}/><Stat l="Registered donors" v={m.regd}/></div>
+ <div className="grid md:grid-cols-3 gap-4"><Card><div className="font-bold mb-2 text-sm">Requests by blood group</div><Bars data={byBg}/></Card><Card><div className="font-bold mb-2 text-sm">Donors by blood group</div><Bars data={dBg} color="bg-emerald-800"/></Card><Card><div className="font-bold mb-2 text-sm">Request activity by status</div><Bars data={bySt} color="bg-slate-400"/></Card></div><div className="grid md:grid-cols-3 gap-4"><Card><div className="font-bold mb-2 text-sm">Requests by hospital</div><Bars data={db.hospitals.map(h=>[h.name.split(' ')[0],db.requests.filter(r=>r.hid===h.id).length])} color="bg-emerald-700"/></Card><Card><div className="font-bold mb-2 text-sm">Requests by location</div><Bars data={Object.keys(CITY).map(k=>[k,db.requests.filter(r=>r.city===k).length])} color="bg-emerald-700"/></Card><Card><div className="font-bold mb-2 text-sm">Insights</div><ul className="text-sm text-slate-300 space-y-1.5 list-disc ml-5">{ins(db).map((t,i)=><li key={i}>{t}</li>)}</ul></Card></div></div>}
+
+// ---- Admin ----
+function Assistant({c}){const [q,setQ]=useState('');const [chat,setChat]=useState([{b:1,t:'Ask me: "Find available O- donors within 10 km", "Summarize emergency requests", "Show low stock hospitals".'}]);
+ const answer=(s)=>{const {db}=c,l=s.toLowerCase();
+  if(l.includes('low')&&l.includes('stock')){const o=db.hospitals.map(h=>h.name+': '+BG.filter(b=>h.stock[b]<3).join(', ')).filter(x=>!x.endsWith(': '));return o.length?'Low stock (under 3 units):\n'+o.join('\n'):'No hospital has low stock.'}
+  if(l.includes('summar')||l.includes('emergenc')||l.includes('request')){const a=db.requests.filter(r=>!final(r));return a.length+' active requests, '+a.filter(r=>r.urgency==='Critical').length+' critical, '+a.filter(r=>r.status==='Pending Verification').length+' awaiting verification.\n'+a.map(r=>r.id+': '+r.units+'x '+r.bg+' at '+getH(db,r.hid).name+' ['+r.urgency+', '+r.status+']').join('\n')}
+  const g=s.match(/\b(AB|A|B|O)\s?([+-])/i),k=s.match(/(\d+)\s*km/i);
+  if(l.includes('donor')){const a=db.requests.filter(r=>!final(r))[0],h=a?getH(db,a.hid):db.hospitals[0];const lim=k?+k[1]:25;
+   const o=db.donors.filter(x=>x.available&&!x.suspended&&x.lastDays>=56&&(!g||x.bg===g[1].toUpperCase()+g[2])&&km(x,h)<=lim);
+   return o.length?o.length+' donors within '+lim+' km of '+h.name+':\n'+o.map(x=>x.name+' ('+x.bg+', '+km(x,h)+' km)').join('\n'):'No available donors match within '+lim+' km of '+h.name+'.'}
+  return 'I can find donors, summarize requests, and report low stock hospitals.'};
+ const send=()=>{if(!q.trim())return;setChat(ch=>[...ch,{t:q},{b:1,t:answer(q)}]);setQ('')};
+ return <Card cls="max-w-2xl"><div className="space-y-2 max-h-80 overflow-y-auto mb-3">{chat.map((m,i)=><div key={i} className={'text-sm whitespace-pre-line rounded-lg px-3 py-2 '+(m.b?'bg-slate-900 text-slate-200':'bg-emerald-900/50 text-emerald-100 ml-8')}>{m.t}</div>)}</div>
+ <div className="flex gap-2"><input value={q} onChange={e=>setQ(e.target.value)} onKeyDown={e=>e.key==='Enter'&&send()} placeholder="Ask the assistant"/><Btn onClick={send}>Send</Btn></div></Card>}
+function EditReq({c,r,close}){const [f,setF]=useState({patient:r.patient,bg:r.bg,units:r.units,hid:r.hid,urgency:r.urgency,deadline:r.deadline});const [err,setErr]=useState('');const s=k=>e=>setF({...f,[k]:e.target.value});
+ const save=()=>{if(f.patient.trim().length<3)return setErr('Enter the patient name');if(f.units<1||f.units>10)return setErr('Units must be 1 to 10');if(f.deadline<1||f.deadline>72)return setErr('Deadline must be 1 to 72 hours');c.upd(d=>act.editReq(d,r.id,f));close()};
+ return <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4" onClick={close}><div className="bg-slate-800 border border-slate-700 rounded-xl p-5 max-w-md w-full space-y-3" onClick={e=>e.stopPropagation()}><h3 className="font-bold">Edit request {r.id}</h3>
+ <Field l="Patient name"><input value={f.patient} onChange={s('patient')}/></Field>
+ <div className="grid grid-cols-2 gap-3"><Field l="Blood group"><select value={f.bg} onChange={s('bg')}>{BG.map(b=><option key={b}>{b}</option>)}</select></Field><Field l="Units"><input type="number" min="1" max="10" value={f.units} onChange={s('units')}/></Field>
+ <Field l="Urgency"><select value={f.urgency} onChange={s('urgency')}>{['Normal','Urgent','Critical'].map(b=><option key={b}>{b}</option>)}</select></Field><Field l="Deadline (hours)"><input type="number" min="1" max="72" value={f.deadline} onChange={s('deadline')}/></Field></div>
+ <Field l="Hospital"><select value={f.hid} onChange={s('hid')}>{c.db.hospitals.map(x=><option key={x.id} value={x.id}>{x.name}</option>)}</select></Field>
+ {r.bg!==f.bg&&<div className="text-xs text-amber-300">Changing the blood group clears old responses and alerts new matching donors.</div>}
+ {err&&<div className="text-sm text-red-300">{err}</div>}<div className="flex gap-2"><Btn onClick={save}>Save changes</Btn><Btn v="s" onClick={close}>Close</Btn></div></div></div>}
+function Admin({c}){const {db,upd}=c;const [tab,setT]=useState('overview');const [nh,setNh]=useState({name:'',city:'Karachi'});const [ed,setEd]=useState(null);const [rf,setRf]=useState({q:'',bg:'',st:'',ver:'',urg:'',hid:'',dt:''}),[df,setDf]=useState({bg:'',city:'',av:'',el:'',ld:''});const [msg,setMsg]=useState('');
+ const [nd,setNd]=useState({name:'',email:'',phone:'',bg:'O+',city:'Karachi',pw:'Donor@123'});const [ns,setNs]=useState({name:'',email:'',pw:'Coord@123'});
+ const setTab=t=>{setMsg('');setT(t)};
+ const ql=rf.q.toLowerCase(),reqF=db.requests.filter(r=>(!ql||(r.id+' '+r.patient+' '+r.user).toLowerCase().includes(ql))&&(!rf.bg||r.bg===rf.bg)&&(!rf.st||r.status===rf.st)&&(!rf.ver||(rf.ver==='v')===!!r.verified)&&(!rf.urg||r.urgency===rf.urg)&&(!rf.hid||r.hid===rf.hid)&&(!rf.dt||r.created>=Date.now()-rf.dt*36e5));
+ const isEl=x=>x.lastDays>=56&&(x.age||28)>=18&&(x.age||28)<=65,donF=db.donors.filter(x=>(!df.bg||x.bg===df.bg)&&(!df.city||x.city===df.city)&&(!df.av||(df.av==='y')===!!(x.available&&!x.suspended&&!(x.pauseUntil>Date.now())))&&(!df.el||(df.el==='y')===isEl(x))&&(!df.ld||(df.ld==='a'?x.lastDays<56:df.ld==='b'?x.lastDays>=56:x.lastDays>=180)));
+ const staff=db.users.filter(u=>u.role==='coordinator'),reqs=db.users.filter(u=>u.role==='requester');
+ const fc=BG.map(b=>{const n=db.requests.filter(r=>r.bg===b).length+(['O+','B+','A+'].includes(b)?3:1);return [b,Math.round(n*1.2)]});
+ const bad=(name,em,pw)=>name.trim().length<3?'Enter a full name':!/^\S+@\S+\.\S+$/.test(em)?'Enter a valid email':pw.length<6?'Password needs 6+ characters':db.users.some(x=>x.email===em)?'That email is already in use':'';
+ const addDonor=()=>{const em=nd.email.trim().toLowerCase(),e=bad(nd.name,em,nd.pw);if(e)return setMsg(e);upd(d=>act.addDonor(d,{...nd,email:em}));setNd({...nd,name:'',email:'',phone:''});setMsg('Donor added. They can sign in with that email and password.')};
+ const addStaff=()=>{const em=ns.email.trim().toLowerCase(),e=bad(ns.name,em,ns.pw);if(e)return setMsg(e);upd(d=>act.addStaff(d,{...ns,email:em}));setNs({...ns,name:'',email:''});setMsg('Coordinator added.')};
+ const Msg=()=>msg?<div className="text-sm text-emerald-300">{msg}</div>:null;
+ return <Shell tabs={[['overview','Overview'],['requests','Requests',db.requests.filter(r=>!r.verified&&!final(r)).length],['donors','Donors'],['people','Coordinators & requesters'],['hospitals','Hospitals'],['forecast','Forecast'],['log','Activity'],['system','Data model'],['notes','Notifications',unread(c,'admin')]]} tab={tab} setTab={setTab}>
+ {ed&&<EditReq c={c} r={ed} close={()=>setEd(null)}/>}
+ {tab==='overview'&&<div className="space-y-4"><Monitor c={c}/><Card><div className="font-bold text-sm mb-2">Live activity</div>{db.logs.slice(0,8).map((l,i)=><div key={i} className="py-1.5 border-t first:border-0 border-slate-700/50 text-sm flex justify-between gap-3"><span>{l.t}</span><span className="text-xs text-slate-500 shrink-0">{ago(l.ts)}</span></div>)}</Card></div>}
+ {tab==='requests'&&<div className="space-y-3"><Card cls="space-y-2"><div className="grid grid-cols-2 md:grid-cols-4 gap-2"><input placeholder="Search ID, patient, requester" value={rf.q} onChange={e=>setRf({...rf,q:e.target.value})}/><FS v={rf} set={setRf} k="bg" ph="All groups" opts={BG}/><FS v={rf} set={setRf} k="st" ph="All statuses" opts={STEPS.concat(['Partially Fulfilled','Rejected','Cancelled','Expired'])}/><FS v={rf} set={setRf} k="ver" ph="All verification" opts={VF}/><FS v={rf} set={setRf} k="urg" ph="All urgency" opts={['Normal','Urgent','Critical']}/><FS v={rf} set={setRf} k="hid" ph="All hospitals" opts={db.hospitals.map(h=>[h.id,h.name])}/><FS v={rf} set={setRf} k="dt" ph="Any date" opts={DT}/><div className="text-xs text-slate-400 self-center">{reqF.length} of {db.requests.length} requests</div></div></Card><Card><div className="tw"><table className="w-full text-sm"><thead><tr className="text-left text-slate-400 text-xs"><th className="py-1">ID</th><th>Patient</th><th>Need</th><th>By</th><th>Donors</th><th>Verified</th><th>Status</th><th></th></tr></thead><tbody>{reqF.map(r=><tr key={r.id} className="border-t border-slate-700/50"><td className="py-2">{r.id}{r.flagged&&<span className="ml-1 text-red-400 text-xs">⚑ suspicious</span>}</td><td>{r.patient}</td><td>{r.units}x {r.bg}</td><td>{r.user}</td><td className="text-xs">{acc(r)} accepted / {Object.keys(r.resp).length} alerted</td><td><Badge t={r.verified?'✓ Verified Blood Request':'Pending Verification'}/></td><td><Badge t={r.status}/></td><td><div className="flex gap-1 py-1.5 flex-wrap">{!r.verified&&!final(r)&&<Btn onClick={()=>upd(d=>act.verify(d,r.id))}>Verify</Btn>}<Btn v="s" onClick={()=>setEd(r)}>Edit</Btn><Btn v="s" onClick={()=>upd(d=>act.flag(d,r.id))}>{r.flagged?'Unflag':'Flag'}</Btn>{!final(r)&&<Btn v="d" onClick={()=>{if(confirm('Cancel request '+r.id+'?'))upd(d=>act.cancel(d,r.id,'admin'))}}>Cancel</Btn>}</div></td></tr>)}</tbody></table>{!reqF.length&&<Empty t="No requests match these filters"/>}</div></Card></div>}
+ {tab==='donors'&&<div className="space-y-3"><Card cls="space-y-3"><div className="font-bold text-sm">Add donor</div><div className="grid grid-cols-2 md:grid-cols-3 gap-3"><Field l="Name"><input value={nd.name} onChange={e=>setNd({...nd,name:e.target.value})}/></Field><Field l="Email"><input value={nd.email} onChange={e=>setNd({...nd,email:e.target.value})}/></Field><Field l="Phone"><input value={nd.phone} onChange={e=>setNd({...nd,phone:e.target.value})}/></Field>
+  <Field l="Blood group"><select value={nd.bg} onChange={e=>setNd({...nd,bg:e.target.value})}>{BG.map(b=><option key={b}>{b}</option>)}</select></Field><Field l="City"><select value={nd.city} onChange={e=>setNd({...nd,city:e.target.value})}>{Object.keys(CITY).map(b=><option key={b}>{b}</option>)}</select></Field><Field l="Login password"><PwInput value={nd.pw} onChange={e=>setNd({...nd,pw:e.target.value})} ac="new-password"/></Field></div><div className="flex items-center gap-3"><Btn onClick={addDonor}>Add donor</Btn><Msg/></div></Card>
+  <Card cls="space-y-2"><div className="grid grid-cols-2 md:grid-cols-5 gap-2"><FS v={df} set={setDf} k="bg" ph="All groups" opts={BG}/><FS v={df} set={setDf} k="city" ph="All cities" opts={Object.keys(CITY)}/><FS v={df} set={setDf} k="av" ph="Any availability" opts={[['y','Available'],['n','Unavailable']]}/><FS v={df} set={setDf} k="el" ph="Any eligibility" opts={[['y','Eligible'],['n','Not eligible']]}/><FS v={df} set={setDf} k="ld" ph="Last donation" opts={[['a','Within 56 days'],['b','56+ days ago'],['c','6+ months ago']]}/></div><div className="text-xs text-slate-400">{donF.length} of {db.donors.length} donors</div></Card>
+  <Card><div className="tw"><table className="w-full text-sm"><thead><tr className="text-left text-slate-400 text-xs"><th className="py-1">Name</th><th>Group</th><th>City</th><th>Phone</th><th>Last donated</th><th>Donations</th><th>Status</th><th></th></tr></thead><tbody>{donF.map(x=><tr key={x.id} className="border-t border-slate-700/50"><td className="py-2">{x.name}</td><td>{x.bg}</td><td>{x.city}</td><td>{x.phone}</td><td>{x.lastDays} days ago</td><td>{x.total}</td><td><Badge t={x.suspended?'Rejected':x.available?'Accepted':'Pending'}/><span className="text-[11px] text-slate-500 ml-1">{x.suspended?'suspended':x.available?'available':'unavailable'}</span></td><td><div className="flex gap-1 py-1.5"><Btn v="s" onClick={()=>upd(d=>{const y=d.donors.find(z=>z.id===x.id);y.suspended=!y.suspended;logA(d,y.name+(y.suspended?' suspended':' reinstated'))})}>{x.suspended?'Reinstate':'Suspend'}</Btn><Btn v="d" onClick={()=>{if(confirm('Remove donor '+x.name+'?'))upd(d=>act.removeDonor(d,x.id))}}>Remove</Btn></div></td></tr>)}</tbody></table></div></Card></div>}
+ {tab==='people'&&<div className="space-y-3"><Card cls="space-y-3"><div className="font-bold text-sm">Coordinators</div><div className="tw"><table className="w-full text-sm"><tbody>{staff.map(u=><tr key={u.id} className="border-t first:border-0 border-slate-700/50"><td className="py-2">{u.name}</td><td className="text-slate-400">{u.email}</td><td className="text-right"><Btn v="d" disabled={staff.length<2} onClick={()=>{if(confirm('Remove coordinator '+u.name+'?'))upd(d=>act.removeUser(d,u.id))}}>Remove</Btn></td></tr>)}</tbody></table></div>
+  <div className="grid sm:grid-cols-3 gap-3"><Field l="Name"><input value={ns.name} onChange={e=>setNs({...ns,name:e.target.value})}/></Field><Field l="Email"><input value={ns.email} onChange={e=>setNs({...ns,email:e.target.value})}/></Field><Field l="Password"><PwInput value={ns.pw} onChange={e=>setNs({...ns,pw:e.target.value})} ac="new-password"/></Field></div><div className="flex items-center gap-3"><Btn onClick={addStaff}>Add coordinator</Btn><Msg/></div></Card>
+  <Card><div className="font-bold text-sm mb-2">Requesters</div><div className="tw"><table className="w-full text-sm"><thead><tr className="text-left text-slate-400 text-xs"><th className="py-1">Name</th><th>Email</th><th>Requests</th><th>Active</th><th>Flagged</th><th></th></tr></thead><tbody>{reqs.map(u=>{const m=db.requests.filter(r=>r.user===u.name);return <tr key={u.id} className="border-t border-slate-700/50"><td className="py-2">{u.name}</td><td className="text-slate-400">{u.email}</td><td>{m.length}</td><td>{m.filter(r=>!final(r)).length}</td><td>{m.filter(r=>r.flagged).length}</td><td className="text-right"><Btn v="d" onClick={()=>{if(confirm('Remove '+u.name+' and cancel their active requests?'))upd(d=>act.removeUser(d,u.id))}}>Remove</Btn></td></tr>})}</tbody></table></div></Card></div>}
+ {tab==='hospitals'&&<div className="space-y-3"><Card cls="flex flex-wrap gap-2 items-end"><Field l="New hospital or blood bank"><input value={nh.name} onChange={e=>setNh({...nh,name:e.target.value})}/></Field><Field l="City"><select value={nh.city} onChange={e=>setNh({...nh,city:e.target.value})}>{Object.keys(CITY).map(b=><option key={b}>{b}</option>)}</select></Field><Btn onClick={()=>{if(nh.name.trim().length<3)return;upd(d=>{d.hospitals.push({id:'h'+nid(),name:nh.name,city:nh.city,lat:CITY[nh.city][0],lng:CITY[nh.city][1],stock:Object.fromEntries(BG.map(b=>[b,0]))});logA(d,'Hospital added: '+nh.name)});setNh({...nh,name:''})}}>Add</Btn></Card>
+  <StockTable c={c} stock={(h,b,n)=>upd(d=>{const x=getH(d,h).stock;x[b]=Math.max(0,x[b]+n)})}/></div>}
+ {tab==='forecast'&&<div className="grid md:grid-cols-2 gap-4"><Card><div className="font-bold mb-1 text-sm">Predicted demand next 7 days (units)</div><div className="text-xs text-slate-400 mb-2">Based on current request history with a 20% growth factor</div><Bars data={fc}/></Card><Card><div className="font-bold mb-2 text-sm">Predicted donor acceptance by distance</div><Bars data={[['Under 5 km',82],['5 to 10 km',68],['10 to 20 km',49],['Over 20 km',31]]} color="bg-emerald-700"/><div className="text-xs text-slate-400 mt-2">Per donor rates are shown in the coordinator matching table.</div></Card></div>}
+ {tab==='log'&&<Card>{db.logs.map((l,i)=><div key={i} className="py-1.5 border-t first:border-0 border-slate-700/50 text-sm flex justify-between gap-3"><span>{l.t}</span><span className="text-xs text-slate-500 shrink-0">{ago(l.ts)}</span></div>)}</Card>}
+ {tab==='system'&&<SystemDesign db={db}/>}
+ {tab==='notes'&&<Notes c={c} to="admin"/>}</Shell>}
+
+// ---- Auth ----
+const H=t=>{let a=0xdeadbeef,b=0x41c6ce57;t='ll$'+t;for(let i=0;i<t.length;i++){const c=t.charCodeAt(i);a=Math.imul(a^c,2654435761);b=Math.imul(b^c,1597334677)}a=Math.imul(a^a>>>16,2246822507)^Math.imul(b^b>>>13,3266489909);b=Math.imul(b^b>>>16,2246822507)^Math.imul(a^a>>>13,3266489909);return (4294967296*(2097151&b)+(a>>>0)).toString(36)};
+const ROLES={donor:{t:'Donor',i:'🩸',d:'Manage your profile, respond to urgent requests and confirm donations.'},requester:{t:'Requester',i:'📋',d:'Create blood requests and track donor responses for a patient.'},coordinator:{t:'Coordinator',i:'🏥',d:'Verify requests, match donors and confirm donations at the hospital.'},admin:{t:'Administrator',i:'🛡️',d:'Oversee users, requests, hospitals, statistics and activity.'}};
+const DEMO={donor:'ali@mail.pk / Donor@123',requester:'sara@mail.pk / Sara@123',coordinator:'coord@lifelink.pk / Coord@123',admin:'admin@lifelink.pk / Admin@123'};
+const API=window.LIFELINK_API||'';
+const load=()=>{try{const s=JSON.parse(localStorage.getItem('ll_db3'));if(s&&s.users)return addHyd(s)}catch(e){}return seed()};
+function Login({role,c,back,done}){
+ const R=ROLES[role],canReg=role==='donor'||role==='requester';
+ const [mode,setMode]=useState('in');const [f,setF]=useState({name:'',email:'',pw:'',phone:'',bg:'O+',city:'Karachi'});const [err,setErr]=useState('');
+ const s=k=>e=>setF({...f,[k]:e.target.value});
+ const submit=()=>{const em=f.email.trim().toLowerCase();
+  if(mode==='in'){const u=c.db.users.find(x=>x.role===role&&x.email===em&&x.pw===H(f.pw));
+   if(!u)return setErr('Incorrect email or password for the '+R.t+' portal.');
+   if(u.donorId&&c.db.donors.find(x=>x.id===u.donorId&&x.suspended))return setErr('This account is suspended. Contact the administrator.');
+   return done(u)}
+  if(f.name.trim().length<3)return setErr('Enter your full name');
+  if(!/^\S+@\S+\.\S+$/.test(em))return setErr('Enter a valid email address');
+  if(f.pw.length<6)return setErr('Password needs at least 6 characters');
+  if(c.db.users.some(x=>x.email===em))return setErr('An account with this email already exists');
+  const did='d'+nid(),u={id:'u'+nid(),role,name:f.name.trim(),email:em,pw:H(f.pw)};if(role==='donor')u.donorId=did;
+  c.upd(d=>{if(role==='donor'){d.donors.push({id:did,name:u.name,bg:f.bg,city:f.city,lat:CITY[f.city][0]+.01,lng:CITY[f.city][1]+.01,available:true,lastDays:90,total:0,phone:f.phone||'Not provided',email:em,suspended:false});logA(d,'New donor registered: '+u.name)}else logA(d,'New requester registered: '+u.name);d.users.push(u)});
+  done(u)};
+ return <div className="max-w-md mx-auto pt-4 space-y-4">
+  <button onClick={back} className="text-sm text-slate-400 hover:text-white">← All portals</button>
+  <Card cls="space-y-4 !p-6"><div className="flex items-center gap-3"><div className="w-11 h-11 rounded-xl bg-slate-900 grid place-items-center text-2xl">{R.i}</div><div><h2 className="font-extrabold text-xl text-white">{R.t} portal</h2><div className="text-xs text-slate-400">{canReg?'Sign in or create an account':'Authorized staff only'}</div></div></div>
+  {canReg&&<div className="grid grid-cols-2 gap-1 bg-slate-900 rounded-lg p-1">{[['in','Sign in'],['up','Create account']].map(([k,l])=><button key={k} onClick={()=>{setMode(k);setErr('')}} className={'py-1.5 rounded-md text-sm font-semibold '+(mode===k?'bg-slate-700 text-white':'text-slate-400')}>{l}</button>)}</div>}
+  {mode==='up'&&<Field l="Full name"><input value={f.name} onChange={s('name')}/></Field>}
+  <Field l="Email"><input type="email" value={f.email} onChange={s('email')} autoComplete="username"/></Field>
+  <Field l="Password"><PwInput value={f.pw} onChange={s('pw')} onKeyDown={e=>e.key==='Enter'&&submit()} ac={mode==='in'?'current-password':'new-password'}/></Field>
+  {mode==='up'&&role==='donor'&&<div className="grid grid-cols-2 gap-3"><Field l="Blood group"><select value={f.bg} onChange={s('bg')}>{BG.map(b=><option key={b}>{b}</option>)}</select></Field><Field l="City"><select value={f.city} onChange={s('city')}>{Object.keys(CITY).map(b=><option key={b}>{b}</option>)}</select></Field><div className="col-span-2"><Field l="Phone (shared only after you accept)"><input value={f.phone} onChange={s('phone')}/></Field></div></div>}
+  {err&&<div role="alert" className="text-sm text-red-300 bg-red-900/20 border border-red-800/50 rounded-lg px-3 py-2"><b>Error: </b>{err}</div>}
+  <Btn cls="w-full !py-2.5" onClick={submit}>{mode==='in'?'Sign in to '+R.t+' portal':'Create account'}</Btn>
+  <div className="text-xs text-slate-500 text-center">Demo login: {DEMO[role]}</div></Card></div>}
+
+// ---- Home / portal chooser ----
+function Home({c,go}){const {db,lang}=c,t=k=>L[k][lang],m=metrics(db);
+ const Li=({items,cls})=><ul className={'ll-list '+cls}>{items.map(x=><li key={x}>{x}</li>)}</ul>;
+ return <div className="space-y-12 md:space-y-14 pb-6">
+ <section aria-labelledby="hero-h" className="ll-hero"><div className="max-w-3xl"><p className="ll-eyebrow">Smart Blood & Emergency Donor Network</p>
+  <h1 id="hero-h" className="ll-h1">{t('title')}</h1><p className="ll-lead">{t('sub')}</p></div></section>
+ <section aria-labelledby="portal-h"><h2 id="portal-h" className="ll-h2">Choose your portal</h2><div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">{Object.entries(ROLES).map(([k,r])=><button key={k} onClick={()=>go(k)} aria-label={r.t+' portal: sign in'} className="ll-portal"><span className="ll-ico" aria-hidden="true">{r.i}</span><span className="font-bold text-white text-lg">{r.t}</span><span className="text-sm text-slate-400">{r.d}</span><span className="ll-go">Sign in <span aria-hidden="true">→</span></span></button>)}</div></section>
+ <section aria-label="Platform statistics" className="grid grid-cols-2 md:grid-cols-4 gap-3"><Stat l={t('total')} v={m.total}/><Stat l={t('active')} v={m.crit} c="text-red-400"/><Stat l={t('avg')} v={m.avg} c="text-emerald-300"/><Stat l={t('donors')} v={db.donors.length+120}/></section>
+ <section aria-label="Manual search compared with LifeLink" className="grid md:grid-cols-2 gap-4">
+ <Card cls="ll-warnc !p-6"><h3 className="font-bold text-red-300 text-lg mb-3">Today: manual search</h3><Li cls="ll-x text-slate-300" items={['Family calls contacts and posts in WhatsApp groups','No check on blood group, last donation date or distance','Fake and duplicate requests spread unchecked','Nobody knows who actually responded']}/></Card>
+ <Card cls="ll-okc !p-6"><h3 className="font-bold text-emerald-300 text-lg mb-3">With LifeLink: smart matching</h3><Li cls="ll-v text-slate-300" items={['Every request is verified by a coordinator first','Donors ranked on compatibility, distance and eligibility','Top 5 alerted, radius expands automatically','Contact details stay masked until a donor accepts']}/></Card></section>
+ <p className="text-sm text-slate-400 max-w-3xl">Final medical eligibility must be confirmed by qualified healthcare staff or the receiving blood facility.</p></div>}
+
+// ---- v2 additions: password toggle, live radar, QR scan, floating assistant ----
+function PwInput({value,onChange,onKeyDown,ac}){const [sh,setSh]=useState(false);
+ return <div className="relative"><input type={sh?'text':'password'} value={value} onChange={onChange} onKeyDown={onKeyDown} autoComplete={ac} style={{paddingRight:42}}/>
+ <button type="button" onClick={()=>setSh(!sh)} aria-label={sh?'Hide password':'Show password'} title={sh?'Hide password':'Show password'} className="absolute inset-y-0 right-0 px-3 flex items-center text-slate-400 hover:text-white">
+ <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{sh?<><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><path d="M1 1l22 22"/></>:<><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></>}</svg></button></div>}
+
+Object.assign(act,{
+ depart(d,id,did){const r=getR(d,id),dn=d.donors.find(x=>x.id===did),h=getH(d,r.hid);r.go=r.go||{};r.go[did]=Date.now();
+  note(d,'requester:'+r.user,dn.name+' started travelling to '+h.name+' for '+id+'. Track live on the radar');note(d,'coordinator',dn.name+' is on the way to '+h.name+' for '+id);logA(d,dn.name+' started journey to '+h.name+' for '+id)},
+ qrConfirm(d,id,did){const dn=d.donors.find(x=>x.id===did);act.confirm(d,id,did);const r=getR(d,id);r.qr=r.qr||{};r.qr[did]=Date.now();note(d,'donor:'+did,'Your QR code was scanned and verified for '+id);logA(d,'QR scan verified: '+dn.name+' donated for '+id)}
+});
+const qrTok=(r,did)=>'LL-'+H(r.id+'|'+did+'|'+r.created).slice(0,8).toUpperCase();
+const qrPay=(r,did)=>'LIFELINK|'+r.id+'|'+did+'|'+qrTok(r,did);
+const useTick=ms=>{const [,s]=useState(0);useEffect(()=>{const i=setInterval(()=>s(x=>x+1),ms);return()=>clearInterval(i)},[])};
+const nice=v=>[5,10,20,50,100,200,300].find(x=>x>=v)||400;
+const demoT=dist=>Math.min(90,Math.max(20,dist*3));
+
+// ---- Live radar between donor and requester (patient at hospital) ----
+function LiveMap({c,r,did,close}){useTick(500);const {db,upd}=c,dn=db.donors.find(x=>x.id===did);if(!r||!dn)return null;
+ const h=getH(db,r.hid),t0=r.go&&r.go[did],dist=km(dn,h),p=t0?Math.min(1,(Date.now()-t0)/1000/demoT(dist)):0,cur=Math.round(dist*(1-p)*10)/10,sc=nice(Math.max(dist,1)),R=92;
+ const ang=Math.atan2(-(dn.lat-h.lat),(dn.lng-h.lng)*Math.cos(rad(h.lat))),ux=Math.cos(ang),uy=Math.sin(ang),bx=ux*cur/sc*R,by=uy*cur/sc*R,mine=c.me===did,eta=Math.ceil(cur/30*60);
+ return <Modal close={close}><h3 className="font-bold">Live donor radar</h3><div className="text-xs text-slate-400">{dn.name} ({dn.bg}) → {h.name}</div>
+ <svg viewBox="-110 -110 220 220" className="w-full max-w-[300px] mx-auto" style={{background:'#04251a',borderRadius:'50%'}}>
+  {[1,2,3].map(i=><g key={i}><circle r={R*i/3} fill="none" stroke="#10B981" strokeOpacity=".45" strokeDasharray={i<3?'3 3':''}/><text x="3" y={-R*i/3+8} fontSize="6.5" fill="#6EE7B7">{Math.round(sc*i/3*10)/10} km</text></g>)}
+  <line x1="-100" x2="100" stroke="#10B981" strokeOpacity=".3"/><line y1="-100" y2="100" stroke="#10B981" strokeOpacity=".3"/><text y="-101" x="-3" fontSize="7" fill="#6EE7B7">N</text>
+  <g style={{transformOrigin:'0 0',animation:'llspin 3s linear infinite'}}><path d="M0 0 L100 0 A100 100 0 0 0 76.5 -64.3 Z" fill="rgba(52,211,153,.28)"/><line x2="100" stroke="#34D399" strokeWidth="1.2"/></g>
+  <line x1={ux*dist/sc*R} y1={uy*dist/sc*R} x2="0" y2="0" stroke="#FBBF24" strokeOpacity=".6" strokeDasharray="2 3"/>
+  <circle r="6" fill="#EF4444"/><circle r="6" fill="none" stroke="#EF4444" style={{animation:'llping 1.6s ease-out infinite'}}/>
+  <circle cx={bx} cy={by} r="4.5" fill="#34D399" stroke="#fff" strokeWidth="1"/><circle cx={bx} cy={by} r="4.5" fill="none" stroke="#34D399" style={{animation:'llping 1.6s ease-out infinite'}}/>
+  <text x={bx+7} y={by+3} fontSize="7" fill="#fff">{cur} km</text></svg>
+ <div className="text-[11px] text-slate-400">Red: patient at hospital · green: donor · rings show distance</div>
+ <div className="grid grid-cols-3 gap-2 text-center">{[['Distance',cur+' km'],['ETA',p>=1?'Arrived':eta+' min'],['Progress',Math.round(p*100)+'%']].map(([l,v])=><div key={l} className="bg-slate-900 rounded-lg p-2"><div className="text-[10px] uppercase text-slate-400">{l}</div><div className="font-extrabold text-emerald-300">{v}</div></div>)}</div>
+ <div className="h-2 bg-slate-900 rounded"><div className="h-2 rounded bg-emerald-500" style={{width:p*100+'%',transition:'width .5s'}}></div></div>
+ <div className="text-xs text-slate-400">{!t0?(mine?'Press start when you leave for the hospital.':'The donor has not started travelling yet.'):p>=1?'Donor has reached the hospital. The coordinator can now scan the donation QR.':'Position updates live (demo speed). ETA assumes 30 km/h.'}</div>
+ <div className="flex gap-2 justify-center">{mine&&!t0&&<Btn onClick={()=>upd(d=>act.depart(d,r.id,did))}>Start journey</Btn>}<Btn v="s" onClick={close}>Close</Btn></div></Modal>}
+
+// ---- QR scanner for the coordinator (camera via jsQR, or paste the code) ----
+function ScanModal({c,close}){const vr=useRef(),[cam,setCam]=useState(false),[msg,setMsg]=useState(null),[code,setCode]=useState(''),[hit,setHit]=useState(null);
+ const kill=()=>{const v=vr.current,s=v&&v.srcObject;if(s)s.getTracks().forEach(t=>t.stop());if(v)v.srcObject=null;setCam(false)};
+ useEffect(()=>()=>{const v=vr.current,s=v&&v.srcObject;if(s)s.getTracks().forEach(t=>t.stop())},[]);
+ const check=txt=>{setHit(null);const p=String(txt).trim().split('|');if(p[0]!=='LIFELINK'||p.length<4)return setMsg({e:1,t:'This is not a LifeLink donation QR.'});
+  const r=getR(c.db,p[1]),dn=c.db.donors.find(x=>x.id===p[2]);if(!r||!dn)return setMsg({e:1,t:'Request or donor not found.'});
+  if(p[3]!==qrTok(r,dn.id))return setMsg({e:1,t:'Invalid or tampered code. Do not confirm.'});
+  const rs=r.resp[dn.id];if(rs==='Donated')return setMsg({e:1,t:'This code was already used. Donation for '+r.id+' is already confirmed.'});
+  if(final(r))return setMsg({e:1,t:'Request '+r.id+' is closed ('+r.status+').'});
+  if(rs!=='Accepted')return setMsg({e:1,t:'This donor has not accepted request '+r.id+'.'});
+  setMsg({ok:1,t:'Valid code. Check the details, then confirm.'});setHit({r,dn})};
+ const start=async()=>{setMsg(null);try{const st=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}}),v=vr.current;v.srcObject=st;await v.play();setCam(true);
+  const cv=document.createElement('canvas'),cx=cv.getContext('2d',{willReadFrequently:true});
+  const loop=()=>{if(!v.srcObject)return;if(v.videoWidth&&window.jsQR){cv.width=v.videoWidth;cv.height=v.videoHeight;cx.drawImage(v,0,0);const im=cx.getImageData(0,0,cv.width,cv.height),q=jsQR(im.data,im.width,im.height);if(q&&q.data){kill();check(q.data);return}}requestAnimationFrame(loop)};loop()}
+  catch(e){setCam(false);setMsg({e:1,t:'Camera is not available here. Paste the donor code below instead.'})}};
+ return <Modal close={()=>{kill();close()}}><h3 className="font-bold">Scan donor QR</h3>
+ <video ref={vr} playsInline muted className={cam?'w-full rounded-lg bg-black':'hidden'}></video>
+ <div className="flex gap-2 justify-center">{cam?<Btn v="s" onClick={kill}>Stop camera</Btn>:<Btn onClick={start}>Start camera scan</Btn>}</div>
+ <div className="text-xs text-slate-400">or paste the code shown under the donor QR</div>
+ <div className="flex gap-2"><input value={code} onChange={e=>setCode(e.target.value)} placeholder="LIFELINK|R1|d1|LL-XXXXXXXX"/><Btn v="s" onClick={()=>check(code)}>Verify</Btn></div>
+ {msg&&<div className={'text-sm rounded-lg px-3 py-2 '+(msg.e?'text-red-300 bg-red-900/20':'text-emerald-300 bg-emerald-900/40')}>{msg.t}</div>}
+ {hit&&<div className="text-left text-sm bg-slate-900 rounded-lg p-3 space-y-0.5"><div><b>{hit.dn.name}</b> · {hit.dn.bg}</div><div className="text-slate-400">{hit.r.id} · {hit.r.patient} · {hit.r.units} units {hit.r.bg}</div><div className="text-slate-400">{getH(c.db,hit.r.hid).name}</div>
+  <div className="pt-2"><Btn onClick={()=>{c.upd(d=>act.qrConfirm(d,hit.r.id,hit.dn.id));kill();setHit(null);setMsg({ok:1,t:'Donation confirmed and recorded.'})}}>Confirm donation</Btn></div></div>}
+ <Btn v="s" onClick={()=>{kill();close()}}>Close</Btn></Modal>}
+
+// ---- Floating assistant: role-aware knowledge base ----
+const lowStock=c=>{const o=c.db.hospitals.map(h=>h.name+': '+BG.filter(b=>h.stock[b]<3).join(', ')).filter(x=>!x.endsWith(': '));return o.length?'Low stock (under 3 units):\n'+o.join('\n'):'No hospital has low stock right now.'};
+const reqSum=c=>{const a=c.db.requests.filter(r=>!final(r));return a.length+' active requests, '+a.filter(r=>r.urgency==='Critical').length+' critical, '+a.filter(r=>!r.verified).length+' awaiting verification.\n'+a.map(r=>r.id+': '+r.units+'x '+r.bg+' at '+getH(c.db,r.hid).name+' ['+r.urgency+', '+r.status+']').join('\n')};
+const donorFind=(c,s)=>{const {db}=c,a=db.requests.filter(r=>!final(r))[0],h=a?getH(db,a.hid):db.hospitals[0],g=s.match(/\b(AB|A|B|O)\s?([+-])/i),k=s.match(/(\d+)\s*km/i),lim=k?+k[1]:25;
+ const o=db.donors.filter(x=>x.available&&!x.suspended&&x.lastDays>=56&&(!g||x.bg===g[1].toUpperCase()+g[2])&&km(x,h)<=lim);
+ return o.length?o.length+' ready donors within '+lim+' km of '+h.name+':\n'+o.map(x=>x.name+' ('+x.bg+', '+km(x,h)+' km, '+x.city+')').join('\n'):'No ready donors match within '+lim+' km of '+h.name+'. Try a larger distance, e.g. "O- donors within 50 km".'};
+const compat=(c,s)=>{const g=s.match(/\b(AB|A|B|O)\s?([+-])/i);if(!g)return 'Tell me a group, e.g. "who can donate to B+" or "who can O- give to".';const x=g[1].toUpperCase()+g[2];return x+' patients can receive from: '+BG.filter(b=>CAN[b].includes(x)).join(', ')+'.\n'+x+' donors can give to: '+CAN[x].join(', ')+'. O- is the universal donor and AB+ the universal recipient.'};
+const KB=[
+['*','','hello hi hey salam assalam namaste',()=>'Hello! Ask me anything about requests, donors, QR confirmation or the live radar. Tap the bulb for ideas.'],
+['*','What is LifeLink?','lifelink what_is about purpose platform',()=>'LifeLink connects verified blood requests with compatible, eligible donors nearby in Karachi, Hyderabad and Jamshoro, and coordinates the donation up to QR confirmation at the hospital.'],
+['*','Who can donate to my blood group?','compatib receive universal who_can can_give blood_group donate_to',compat],
+['*','How does smart matching work?','matching rank score algorithm how_match top_5',()=>'Donors are first filtered by ABO/Rh compatibility, then scored on distance (50%), availability (20%), eligibility and the 56 day gap (20%), exact group match (10%) and past response history. The top 5 are alerted and the radius grows 10 to 50 km if more are needed.'],
+['*','How does QR donation confirmation work?','qr scan code confirm_donation verify_donation',()=>'After accepting, the donor opens My donations > Show QR. At the hospital the coordinator scans it (camera or pasted code). The code is checked against the request and donor, rejected if fake or already used, and then the donation is confirmed and everyone is notified.'],
+['*','How does the live radar map work?','radar live_map map distance eta track live',()=>'The radar shows the patient hospital at the centre and the donor as a moving green blip with live distance, ETA and progress. The donor presses Start journey after accepting; requester and coordinator can watch via Live radar.'],
+['*','Which cities are supported?','city cities karachi hyderabad jamshoro location area',()=>'LifeLink currently covers Karachi, Hyderabad and Jamshoro. Choose the city first, then a hospital in that city.'],
+['*','Which languages are supported?','language urdu sindhi english translate',()=>'The top bar switches between English, Urdu and Sindhi for key screens and donor-friendly request summaries.'],
+['*','What are the demo logins?','demo login credential test_account sign_in',()=>'Donor: ali@mail.pk / Donor@123\nRequester: sara@mail.pk / Sara@123\nCoordinator: coord@lifelink.pk / Coord@123\nAdmin: admin@lifelink.pk / Admin@123'],
+['*','Can I see my password while typing?','show_password hide_password eye password_visible reveal',()=>'Yes. Tap the eye icon at the right end of any password box to show or hide what you typed.'],
+['*','Is this medical advice?','medical doctor disclaimer health advice',()=>'No. LifeLink only coordinates people. Final medical eligibility must be confirmed by qualified healthcare staff or the receiving blood facility.'],
+['requester','How do I create a blood request?','create new_request make_request submit how_request ask_blood',()=>'Open New request, enter patient name, blood group, units, city, hospital, urgency and deadline, then submit. Compatible donors are alerted immediately and a coordinator verifies it.'],
+['requester','Which cities and hospitals can I choose?','city cities hospital karachi hyderabad jamshoro choose',()=>'Pick Karachi, Hyderabad or Jamshoro. The hospital list then shows only hospitals in that city.'],
+['requester','What is the status of my requests?','status my_request track progress update where_is',c=>{const m=c.db.requests.filter(r=>r.user===c.user);return m.length?m.map(r=>r.id+' ('+r.patient+'): '+r.status+', '+r.got+'/'+r.units+' donated, '+acc(r)+' accepted'+(final(r)?'':', '+left(r))).join('\n'):'You have no requests yet. Open New request to create one.'}],
+['requester','How does urgency work?','urgency critical urgent normal priority suggest',()=>'Normal, Urgent and Critical set alert wording and the matching radius (Critical searches closer first). The AI priority suggestion proposes Critical for deadlines of 6 h or less or 4+ units, and you can apply it with one tap.'],
+['requester','Why is my request pending verification?','verify verification pending why_pending verified',()=>'Donors are alerted right away, but a coordinator still confirms the request with the hospital. Once verified it shows the green Verified Blood Request badge.'],
+['requester','When can I see donor phone numbers?','contact phone privacy mask number hidden donor_details',()=>'Contact details stay masked until a donor accepts. After acceptance you see their name and phone in My requests.'],
+['requester','How do I track the donor live?','track live radar map where_donor eta distance arrive',()=>'In My requests, press Live radar next to an accepted donor. It shows distance, ETA and a moving blip once the donor starts the journey.'],
+['requester','How is the donation confirmed?','qr confirm confirmation donation_done code',()=>'The donor shows a QR at the hospital and the coordinator scans it. You get a notification with the units received (for example 1/2) and the request becomes Fulfilled when all units are done.'],
+['requester','How do I cancel or complete a request?','cancel complete close fulfil fulfill finish delete',()=>'In My requests use Cancel request while it is active, Mark as fulfilled once donors have helped, and Mark as completed after it shows Fulfilled.'],
+['requester','What if my deadline passes?','expire expired deadline overdue time_left late duplicate',()=>'Requests past their deadline become Expired and donors are told. Create a new request with a fresh deadline. Duplicate requests for the same patient, group and hospital are blocked.'],
+['donor','Which requests are waiting for me?','pending waiting my_requests alert new_request for_me',c=>{const dn=c.db.donors.find(x=>x.id===c.me),p=c.db.requests.filter(r=>r.resp[c.me]==='Pending'&&!final(r));return p.length?p.length+' pending:\n'+p.map(r=>r.id+': '+r.units+'x '+r.bg+' at '+getH(c.db,r.hid).name+' ('+r.urgency+', '+km(dn,getH(c.db,r.hid))+' km, '+left(r)+')').join('\n')+'\nOpen the Requests tab to respond.':'No pending requests right now. Keep Available ON in your profile to be alerted.'}],
+['donor','Am I eligible to donate?','eligible eligibility can_i_donate qualify allowed',c=>{const dn=c.db.donors.find(x=>x.id===c.me),a=dn.age||28;return a<18||a>65?'Donors must be 18 to 65. Your profile age is '+a+'.':dn.lastDays>=56?'Yes. It has been '+dn.lastDays+' days since your last donation (56 needed). Final medical checks happen at the hospital.':'Not yet. You donated '+dn.lastDays+' days ago, '+(56-dn.lastDays)+' more days to go.'}],
+['donor','How do I accept a request?','accept proceed respond how_accept say_yes',()=>'Open Requests and tap Accept and proceed. The request moves to My donations, your details are shared with the requester and you can show your QR and start the live map.'],
+['donor','Can I withdraw after accepting?','withdraw cancel back_out change_mind decline',()=>'Yes. In My donations press Withdraw. LifeLink automatically alerts a replacement donor, so please withdraw early rather than not show up.'],
+['donor','How do I show my donation QR?','qr show_qr code scan hospital desk',()=>'Go to My donations, press Show QR on the accepted request and let the coordinator scan it at the hospital. A backup code is printed under the QR.'],
+['donor','How do I start the live map?','live_map map radar start_journey journey navigate route leave on_my_way',()=>'In My donations press Live map, then Start journey when you leave. The requester and coordinator can follow your distance and ETA until you arrive.'],
+['donor','Who can see my phone number?','privacy phone contact share safe private email',()=>'Nobody until you accept a request. Before that requesters only see a compatible donor and the distance.'],
+['donor','How do I pause or go unavailable?','pause unavailable available toggle busy travelling offline',()=>'In Profile switch Available OFF, or choose Pause for 7 days. Unavailable donors are not alerted.'],
+['donor','How long must I wait between donations?','56 wait gap days between again next_donation',()=>'At least 56 days between whole blood donations. Update Days since last donation in your profile.'],
+['donor','Which groups can I give to?','my_group give_to who_can_i_help help',c=>{const dn=c.db.donors.find(x=>x.id===c.me);return 'As '+dn.bg+' you can give to: '+CAN[dn.bg].join(', ')+'.'}],
+['donor','How should I prepare before donating?','tips prepare eat water iron before hydrate sleep',()=>'Eat a healthy meal, drink plenty of water, sleep well, avoid heavy exercise, and carry your CNIC. Staff will do the final health screening.'],
+['donor','How do I report a suspicious request?','report suspicious fake scam fraud',()=>'Press Report suspicious on the request card. Two reports flag it automatically and notify the admin.'],
+['coordinator','How many requests need verification?','queue pending_verification verify_count to_verify waiting',c=>{const p=c.db.requests.filter(r=>!r.verified&&!final(r));return p.length?p.length+' awaiting verification:\n'+p.map(r=>r.id+' · '+r.units+'x '+r.bg+' · '+r.patient+' · '+r.urgency).join('\n'):'The queue is clear.'}],
+['coordinator','How do I verify a request?','verify verification process confirm_hospital reject',()=>'Open Verification queue, call the hospital, tick Hospital contact confirmed and press Verify request. Reject anything that cannot be confirmed.'],
+['coordinator','How do I alert more donors?','alert top_5 expand radius notify more_donors',()=>'In Matching and response press Alert Top 5, or Expand radius for 10 more. Auto expand adds donors after 20 s if nobody accepts, up to 50 km.'],
+['coordinator','How are donors scored?','score ranking rank percent accept_probability why_donor',()=>'Score = distance 50% + availability 20% + eligibility 20% + group match 10% + response history. Accept % estimates the chance a donor will say yes. Incompatible donors score 0 and are hidden.'],
+['coordinator','How do I confirm a donation with QR?','qr scan confirm donation scan_qr verify_qr',()=>'Press Scan donor QR (or Scan QR on the donor row), scan with the camera or paste the code, check the details and press Confirm donation. Fake, wrong or reused codes are rejected.'],
+['coordinator','How do I track a donor live?','live radar map track eta distance arrive on_the_way',()=>'Press Live radar on an accepted donor row. You see distance, ETA and a moving blip once the donor starts the journey.'],
+['coordinator','Which hospitals have low stock?','low_stock stock shortage inventory blood_bank',lowStock],
+['coordinator','Summarize active requests','summar active emergenc requests overview',reqSum],
+['coordinator','What if a donor declines?','decline declined withdraw replacement no_response',()=>'The system automatically alerts one replacement donor. You can also expand the radius manually.'],
+['coordinator','Find available donors nearby','find donors within km available o- a+ b+ nearby',donorFind],
+['admin','Give me a system overview','overview summary stats statistics dashboard fulfilment rate performance',c=>{const m=metrics(c.db);return 'Total requests '+m.total+', active '+m.active+', critical '+m.crit+', pending verification '+m.pending+'.\nFulfilment rate '+m.rate+'%, avg fulfilment '+m.avg+' h, avg response '+m.rsp+' min.\nRegistered donors '+m.regd+', ready now '+m.avail+'.'}],
+['admin','Summarize emergency requests','summar emergenc requests active open critical',reqSum],
+['admin','Which hospitals have low stock?','low_stock stock shortage inventory',lowStock],
+['admin','Find available donors','find donors within km available nearby o- a+ b+',donorFind],
+['admin','How do I add a donor or coordinator?','add_donor add_coordinator add staff new_donor create_user register',()=>'Donors tab: fill name, email, phone, group, city and a password, then Add donor. Coordinators and requesters tab: add a coordinator the same way. Passwords have a show/hide eye.'],
+['admin','How do I suspend or remove a donor?','suspend remove delete_donor reinstate ban block',()=>'In the Donors tab use Suspend (reversible) or Remove. Removing also deletes the login and clears their responses.'],
+['admin','How do I edit, flag or cancel a request?','edit flag cancel request suspicious fix_request',()=>'In Requests use Edit (a changed blood group re-matches donors), Flag for suspicious items, Verify, or Cancel. Everyone involved is notified.'],
+['admin','What do the insights say?','insight forecast predict demand trend shortage',c=>ins(c.db).join('\n')],
+['admin','How do I manage hospital stock?','hospital stock add_hospital update_stock inventory units',()=>'Hospitals tab: add a hospital in Karachi, Hyderabad or Jamshoro and adjust stock per group with + and -. Under 3 units shows as Low.'],
+['admin','Where is the activity log?','log activity audit history events',c=>'Open the Activity tab. Latest events:\n'+c.db.logs.slice(0,4).map(l=>'• '+l.t).join('\n')],
+['admin','Is the data secure?','security password hash secure data_model privacy',()=>'Passwords are stored as hashes, donor contacts stay masked until acceptance, and QR codes are validated per request and donor. See the Data model tab for entities.']
+];
+const ideasFor=role=>KB.filter(e=>e[1]&&(e[0]===role));
+function botAnswer(s,c,role){const l=s.toLowerCase(),tk=l.split(/[^a-z0-9+\-]+/);let best=null,bs=0;
+ KB.filter(e=>e[0]==='*'||e[0]===role).forEach(e=>{let sc=0;e[2].split(' ').forEach(k=>{if(!k)return;k=k.replace(/_/g,' ');if(k.length<=3?tk.includes(k):l.includes(k))sc+=1+(k.length>5?.5:0)});
+  e[1].toLowerCase().split(/\W+/).forEach(w=>{if(w.length>3&&l.includes(w))sc+=.4});if(sc>0&&e[0]!=='*')sc+=.3;if(sc>bs){bs=sc;best=e}});
+ return bs>=1&&best?(typeof best[3]==='function'?best[3](c,s):best[3]):null}
+function FloatingBot({c,role}){const rn={requester:'Requester',donor:'Donor',coordinator:'Coordinator',admin:'Admin',guest:'Visitor'}[role];
+ const [open,setOpen]=useState(false),[ideas,setIdeas]=useState(false),[q,setQ]=useState(''),[typing,setTyping]=useState(false),box=useRef();
+ const [chat,setChat]=useState([{b:1,t:'Assalam o Alaikum! I am the LifeLink assistant for '+rn+'s. Ask about requests, donors, the QR check-in or the live radar, or tap the bulb for ideas.'}]);
+ const list=role==='guest'?KB.filter(e=>e[0]==='*'&&e[1]):ideasFor(role).concat(KB.filter(e=>e[0]==='*'&&e[1]&&role!=='guest').slice(1,5));
+ useEffect(()=>{if(box.current)box.current.scrollTop=box.current.scrollHeight},[chat,open,typing,ideas]);
+ const ask=s=>{s=(s||q).trim();if(!s)return;setQ('');setIdeas(false);setChat(ch=>[...ch,{t:s}]);setTyping(true);
+  setTimeout(()=>{const a=botAnswer(s,c,role)||'I am not sure about that yet. Try asking:\n• '+list.slice(0,4).map(e=>e[1]).join('\n• ');setChat(ch=>[...ch,{b:1,t:a}]);setTyping(false)},350)};
+ const chips=(ideas?list:list.slice(0,4)).map(e=><button key={e[1]} onClick={()=>ask(e[1])} className="text-left text-xs px-2.5 py-1.5 rounded-full border border-emerald-500/40 bg-emerald-900/40 text-emerald-300">{e[1]}</button>);
+ return <>{open&&<div className="fixed z-[60] right-3 sm:right-5 flex flex-col bg-slate-800 border border-slate-700 rounded-2xl shadow-2xl overflow-hidden" style={{bottom:'calc(env(safe-area-inset-bottom,0px) + 80px)',width:'min(24rem,calc(100vw - 1.5rem))',height:'min(34rem,calc(100vh - 150px))'}}>
+  <div className="flex items-center gap-2 px-4 py-3" style={{background:'#047857',color:'#fff'}}><span className="text-xl">🤖</span><div className="flex-1"><div className="font-bold text-sm">LifeLink Assistant</div><div className="text-[11px] opacity-80">{rn} help · {list.length+KB.filter(e=>e[0]==='*').length} topics</div></div>
+   <button onClick={()=>setIdeas(!ideas)} title="Question ideas" className="px-2 text-lg">💡</button><button onClick={()=>setOpen(false)} className="px-2" aria-label="Close">✕</button></div>
+  <div ref={box} className="flex-1 overflow-y-auto p-3 space-y-2">{chat.map((m,i)=><div key={i} className={'text-sm whitespace-pre-line rounded-lg px-3 py-2 '+(m.b?'bg-slate-900 text-slate-200 mr-6':'bg-emerald-900/50 text-emerald-100 ml-8')}>{m.t}</div>)}
+   {typing&&<div className="text-xs text-slate-400 px-2">Assistant is typing…</div>}{(ideas||chat.length<2)&&<div className="flex flex-wrap gap-1.5 pt-1">{chips}</div>}</div>
+  <div className="p-2 border-t border-slate-700 flex gap-2"><input value={q} onChange={e=>setQ(e.target.value)} onKeyDown={e=>e.key==='Enter'&&ask()} placeholder="Ask the assistant"/><Btn onClick={()=>ask()}>Send</Btn></div></div>}
+ <button onClick={()=>setOpen(!open)} aria-label="Open assistant" className="fixed z-[60] right-3 sm:right-5 w-14 h-14 rounded-full shadow-xl grid place-items-center text-2xl" style={{bottom:'calc(env(safe-area-inset-bottom,0px) + 16px)',background:'#047857',color:'#fff'}}>{open?'✕':'💬'}</button></>}
+
+function addHyd(s){if(s.hyd)return s;s.hyd=1;
+ [['h5','Civil Hospital Hyderabad',25.3925,68.3578,{'A+':6,'A-':1,'B+':5,'B-':1,'AB+':2,'AB-':0,'O+':7,'O-':2}],['h6','Isra University Hospital',25.3277,68.3139,{'A+':5,'A-':2,'B+':4,'B-':1,'AB+':3,'AB-':1,'O+':8,'O-':3}]].forEach(([id,name,lat,lng,stock])=>{if(!s.hospitals.some(x=>x.id===id))s.hospitals.push({id,name,city:'Hyderabad',lat,lng,stock})});
+ [['d7','Kashif Soomro','A+',.01,.012,'0306 7778899'],['d8','Mehwish Chandio','O+',-.012,.02,'0307 8889900']].forEach(([id,n,bg,dx,dy,ph])=>{if(!s.donors.some(x=>x.id===id)){s.donors.push(mk(id,n,bg,'Hyderabad',dx,dy,true,100,3,ph));s.users.push({id:'u'+id,role:'donor',name:n,email:n.split(' ')[0].toLowerCase()+'@mail.pk',pw:H('Donor@123'),donorId:id})}});return s}
+
+function App(){
+ const [db,setDb]=useState(load);const [lang,setLang]=useState('en');const [page,setPage]=useState('portal');
+ const [sess,setSess]=useState(()=>{try{return JSON.parse(sessionStorage.getItem('ll_s'))}catch(e){return null}});
+ const upd=fn=>setDb(p=>{const d=structuredClone(p);fn(d);return d});
+ // ---- database sync: PostgreSQL via /api/state (falls back to localStorage if the API is unreachable) ----
+ const dbRef=useRef(db);dbRef.current=db;const sy=useRef({doc:null,ready:false,last:'',remote:false});
+  // shared database: one document in the page's hosted db (falls back to this browser's localStorage when unavailable)
+  useEffect(()=>{const q=sy.current;if(q.remote){q.remote=false;return}if(!q.ready)return;const js=JSON.stringify(db);if(js===q.last)return;const t=setTimeout(()=>{q.last=js;(q.doc?q.doc.set({json:js}):fetch(API+'/api/state',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({json:js})}).then(r=>{if(!r.ok)throw 0})).catch(()=>{q.last=''})},400);return()=>clearTimeout(t)},[db]);
+  useEffect(()=>{let un;(async()=>{try{if(!window.claude)return;const d=await claude.use('db');if(!d)return;const q=sy.current;q.doc=d.doc('app/state');
+   un=q.doc.onSnapshot(snap=>{const j=snap.exists&&snap.data().json;if(!j){q.ready=true;q.last='';setDb(p=>({...p}));return}if(j===q.last){q.ready=true;return}q.last=j;q.ready=true;q.remote=true;setDb(JSON.parse(j))},()=>{})}catch(e){}})();return()=>un&&un()},[]);
+ // server sync (deployed backend): pulls the shared state every 3 s and pushes local changes; used when the hosted-db runtime is absent
+ useEffect(()=>{if(window.claude)return;let stop=false,ver=0,t;const q=sy.current;
+  const pull=async()=>{try{const r=await fetch(API+'/api/state?since='+ver,{cache:'no-store'});if(r.status===204){q.ready=true}else if(r.ok){const d=await r.json();ver=d.version;if(d.json){if(d.json!==q.last){q.last=d.json;q.remote=true;setDb(JSON.parse(d.json))}q.ready=true}else{q.ready=true;q.last='';setDb(p=>({...p}))}}}catch(e){}if(!stop)t=setTimeout(pull,3000)};pull();return()=>{stop=true;clearTimeout(t)}},[]);
+ useEffect(()=>{document.documentElement.dir=lang==='en'?'ltr':'rtl'},[lang]);
+ useEffect(()=>{try{localStorage.setItem('ll_db3',JSON.stringify(db))}catch(e){}},[db]);
+ useEffect(()=>{upd(d=>act.expire(d));const i=setInterval(()=>setDb(p=>{const d=structuredClone(p);act.expire(d);return d}),60000);return()=>clearInterval(i)},[]);
+ const user=sess&&db.users.find(u=>u.id===sess.id);
+ const signIn=u=>{try{sessionStorage.setItem('ll_s',JSON.stringify({id:u.id}))}catch(e){}setSess({id:u.id});window.scrollTo(0,0)};
+ const out=()=>{try{sessionStorage.removeItem('ll_s')}catch(e){}setSess(null);setPage('portal')};
+ const c={db,upd,lang,me:user&&user.donorId,user:user&&user.name,intent:''};
+ const role=user&&user.role;
+ return <div className="min-h-screen"><a href="#main" className="ll-skip">Skip to main content</a>
+  <header className="sticky top-0 z-40 bg-gray-900/95 backdrop-blur border-b border-slate-700/60"><div className="max-w-6xl mx-auto px-4 h-14 flex items-center gap-3">
+   <button onClick={()=>setPage('portal')} className="font-extrabold text-white flex items-center gap-2"><span className="w-7 h-7 rounded-lg bg-red-700 grid place-items-center text-sm">♥</span>LifeLink</button>
+   <div className="ml-auto flex items-center gap-2"><select aria-label="Language" className="!w-auto !py-1 text-sm" value={lang} onChange={e=>setLang(e.target.value)}><option value="en">English</option><option value="ur">اردو</option><option value="sd">سنڌي</option></select>
+   {user&&<Btn v="s" onClick={out}>Log out</Btn>}</div></div></header>
+  <main id="main" tabIndex={-1} className="max-w-6xl mx-auto px-4 py-5 md:py-8">
+   {user&&<div className="flex flex-wrap items-center gap-3 mb-4 bg-slate-800 border border-slate-700/50 rounded-xl px-4 py-2 text-sm"><span className="text-xl">{ROLES[role].i}</span><b className="text-white">{user.name}</b><span className="text-emerald-300 font-semibold">{ROLES[role].t} portal</span><span className="ml-auto text-xs text-slate-500">{user.email}</span></div>}
+   {!user&&page==='portal'&&<Home c={c} go={setPage}/>}
+   {!user&&page!=='portal'&&<Login role={page} c={c} back={()=>setPage('portal')} done={signIn}/>}
+   {role==='requester'&&<Requester c={c}/>}{role==='donor'&&<Donor c={c}/>}{role==='coordinator'&&<Coordinator c={c}/>}{role==='admin'&&<Admin c={c}/>}
+   {!user&&page==='portal'&&<div className="text-center mt-10"><button className="text-xs text-slate-500 hover:text-slate-300" onClick={()=>{if(confirm('Reset all demo data and accounts?'))setDb(seed())}}>Reset demo data</button></div>}
+  </main><FloatingBot key={role||'guest'} c={c} role={role||'guest'}/></div>}
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script></body></html>
